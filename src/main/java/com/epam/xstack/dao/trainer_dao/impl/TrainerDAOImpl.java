@@ -1,8 +1,12 @@
 package com.epam.xstack.dao.trainer_dao.impl;
 
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
+import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
+import com.epam.xstack.mapper.trainer_mapper.TrainerProfileRequestMapper;
 import com.epam.xstack.mapper.trainer_mapper.TrainerRegistrationRequestMapper;
+import com.epam.xstack.models.dto.trainer_dto.request.TrainerProfileRequestDTO;
 import com.epam.xstack.models.dto.trainer_dto.request.TrainerRegistrationRequestDTO;
+import com.epam.xstack.models.dto.trainer_dto.response.TrainerProfileResponseDTO;
 import com.epam.xstack.models.dto.trainer_dto.response.TrainerRegistrationResponseDTO;
 import com.epam.xstack.models.entity.Trainer;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +16,37 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class TrainerDAOImpl implements TrainerDAO {
     private final SessionFactory sessionFactory;
     private final TrainerRegistrationRequestMapper registrationRequestMapper;
+    private final TrainerProfileRequestMapper getTrainerProfileRequestMapper;
+    @Override
+    @Transactional
+    public TrainerProfileResponseDTO selectTrainerProfileByUserName(UUID id, TrainerProfileRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainer trainer = getTrainerProfileRequestMapper.toEntity(requestDTO);
+        Trainer trainerId = session.get(Trainer.class, id);
+
+        if (trainerId.getUserName().equals(trainer.getUserName())) {
+            getTrainerProfileRequestMapper.toDto(trainer);
+
+            return TrainerProfileResponseDTO
+                    .builder()
+                    .firstName(trainerId.getFirstName())
+                    .lastName(trainerId.getLastName())
+                    .specialization(trainerId.getSpecialization())
+                    .isActive(trainerId.getIsActive())
+                    .traineeList(TraineeMapper.INSTANCE.toDtos(trainerId.getTraineeList()))
+                    .build();
+        } else {
+            throw new RuntimeException("Not available");
+        }
+
+    }
     @Override
     @Transactional
     public TrainerRegistrationResponseDTO saveTrainer(TrainerRegistrationRequestDTO requestDTO) {
