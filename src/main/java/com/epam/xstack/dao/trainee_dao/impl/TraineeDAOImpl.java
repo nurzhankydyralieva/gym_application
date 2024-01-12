@@ -3,11 +3,14 @@ package com.epam.xstack.dao.trainee_dao.impl;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeProfileRequestMapper;
 import com.epam.xstack.mapper.trainee_mapper.TraineeRegistrationRequestMapper;
+import com.epam.xstack.mapper.trainee_mapper.TraineeProfileUpdateRequestMapper;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
 import com.epam.xstack.models.entity.Trainee;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -24,6 +27,35 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final SessionFactory sessionFactory;
     private final TraineeRegistrationRequestMapper registrationRequestMapper;
     private final TraineeProfileRequestMapper getTraineeProfileRequestMapper;
+    private final TraineeProfileUpdateRequestMapper updateTraineeProfileRequestMapper;
+    @Override
+    @Transactional
+    public TraineeProfileUpdateResponseDTO updateTraineeProfile(UUID id, TraineeProfileUpdateRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainee trainee = updateTraineeProfileRequestMapper.toEntity(requestDTO);
+        Trainee traineeToBeUpdated = session.get(Trainee.class, id);
+
+        traineeToBeUpdated.setUserName(trainee.getUserName());
+        traineeToBeUpdated.setFirstName(trainee.getFirstName());
+        traineeToBeUpdated.setLastName(trainee.getLastName());
+        traineeToBeUpdated.setDateOfBirth(trainee.getDateOfBirth());
+        traineeToBeUpdated.setAddress(trainee.getAddress());
+        traineeToBeUpdated.setIsActive(trainee.getIsActive());
+
+        session.update(traineeToBeUpdated);
+        updateTraineeProfileRequestMapper.toDto(trainee);
+
+        return TraineeProfileUpdateResponseDTO
+                .builder()
+                .userName(traineeToBeUpdated.getUserName())
+                .firstName(traineeToBeUpdated.getFirstName())
+                .lastName(traineeToBeUpdated.getLastName())
+                .dateOfBirth(traineeToBeUpdated.getDateOfBirth())
+                .address(traineeToBeUpdated.getAddress())
+                .isActive(traineeToBeUpdated.getIsActive())
+                .trainers(TrainerMapper.INSTANCE.toDtos(traineeToBeUpdated.getTrainers()))
+                .build();
+    }
 
     @Override
     @Transactional

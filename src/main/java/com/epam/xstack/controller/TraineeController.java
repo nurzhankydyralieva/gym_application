@@ -2,8 +2,10 @@ package com.epam.xstack.controller;
 
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
 import com.epam.xstack.service.trainee_service.TraineeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,5 +26,9 @@ public class TraineeController {
     @GetMapping("/{id}")
     public ResponseEntity<TraineeProfileResponseDTO> selectTraineeProfile(@PathVariable("id") UUID id, @RequestBody TraineeProfileRequestDTO requestDTO) {
         return new ResponseEntity<>(traineeService.selectTraineeProfileByUserName(id, requestDTO), HttpStatus.OK);
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<TraineeProfileUpdateResponseDTO> updateUser(@PathVariable("id") UUID id, @RequestBody TraineeProfileUpdateRequestDTO requestDTO) {
+        return new ResponseEntity<>(traineeService.updateTraineeProfile(id, requestDTO), HttpStatus.OK);
     }
 }
