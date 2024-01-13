@@ -136,4 +136,23 @@ public class TraineeDAOImpl implements TraineeDAO {
         }
         return password.toString();
     }
+    @Override
+    @Transactional
+    public TraineeOkResponseDTO deleteTraineeByUserName(UUID id, TraineeProfileSelectRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainee trainee = getTraineeProfileRequestMapper.toEntity(requestDTO);
+        Trainee traineeId = session.get(Trainee.class, id);
+
+        if (traineeId.getUserName().equals(trainee.getUserName())) {
+            session.remove(traineeId);
+            return TraineeOkResponseDTO
+                    .builder()
+                    .response("Trainee is deleted from database")
+                    .code(Code.STATUS_200_OK)
+                    .build();
+        } else {
+            throw new RuntimeException("Trainee is not available in database");
+        }
+
+    }
 }
