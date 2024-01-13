@@ -1,11 +1,11 @@
 package com.epam.xstack.controller;
 
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileSelectRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileSelectResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
 import com.epam.xstack.service.trainee_service.TraineeService;
@@ -26,7 +26,7 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.saveTrainee(requestDTO), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<TraineeProfileResponseDTO> selectTraineeProfile(@PathVariable("id") UUID id, @RequestBody TraineeProfileRequestDTO requestDTO) {
+    public ResponseEntity<TraineeProfileSelectResponseDTO> selectTraineeProfile(@PathVariable("id") UUID id, @RequestBody TraineeProfileSelectRequestDTO requestDTO) {
         return new ResponseEntity<>(traineeService.selectTraineeProfileByUserName(id, requestDTO), HttpStatus.OK);
     }
     @PutMapping("/update/{id}")

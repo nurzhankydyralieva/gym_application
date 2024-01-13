@@ -2,11 +2,11 @@ package com.epam.xstack.service.trainee_service.impl;
 
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileSelectRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileSelectResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
 import com.epam.xstack.service.trainee_service.TraineeService;
@@ -25,7 +25,7 @@ public class TraineeServiceImpl implements TraineeService {
         return traineeDAO.saveTrainee(requestDTO);
     }
     @Override
-    public TraineeProfileResponseDTO selectTraineeProfileByUserName(UUID id, TraineeProfileRequestDTO requestDTO) {
+    public TraineeProfileSelectResponseDTO selectTraineeProfileByUserName(UUID id, TraineeProfileSelectRequestDTO requestDTO) {
         return traineeDAO.selectTraineeProfileByUserName(id, requestDTO);
     }
     @Override

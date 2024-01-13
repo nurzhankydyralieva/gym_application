@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TraineeProfileResponseDTO {
+public class TraineeProfileSelectResponseDTO {
     private String firstName;
     private String lastName;
     private Date dateOfBirth;

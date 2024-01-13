@@ -2,16 +2,16 @@ package com.epam.xstack.dao.trainee_dao.impl;
 
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeActivateDeActivateMapper;
-import com.epam.xstack.mapper.trainee_mapper.TraineeProfileRequestMapper;
+import com.epam.xstack.mapper.trainee_mapper.TraineeProfileSelectRequestMapper;
 import com.epam.xstack.mapper.trainee_mapper.TraineeRegistrationRequestMapper;
 import com.epam.xstack.mapper.trainee_mapper.TraineeProfileUpdateRequestMapper;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileSelectRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileSelectResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
 import com.epam.xstack.models.entity.Trainee;
@@ -30,7 +30,7 @@ import java.util.UUID;
 public class TraineeDAOImpl implements TraineeDAO {
     private final SessionFactory sessionFactory;
     private final TraineeRegistrationRequestMapper registrationRequestMapper;
-    private final TraineeProfileRequestMapper getTraineeProfileRequestMapper;
+    private final TraineeProfileSelectRequestMapper getTraineeProfileRequestMapper;
     private final TraineeProfileUpdateRequestMapper updateTraineeProfileRequestMapper;
     private final TraineeActivateDeActivateMapper activateDeActivateTraineeMapper;
 
@@ -86,7 +86,7 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     @Override
     @Transactional
-    public TraineeProfileResponseDTO selectTraineeProfileByUserName(UUID id, TraineeProfileRequestDTO requestDTO) {
+    public TraineeProfileSelectResponseDTO selectTraineeProfileByUserName(UUID id, TraineeProfileSelectRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = getTraineeProfileRequestMapper.toEntity(requestDTO);
         Trainee traineeId = session.get(Trainee.class, id);
@@ -94,7 +94,7 @@ public class TraineeDAOImpl implements TraineeDAO {
         if (traineeId.getUserName().equals(trainee.getUserName())) {
             getTraineeProfileRequestMapper.toDto(trainee);
 
-            return TraineeProfileResponseDTO
+            return TraineeProfileSelectResponseDTO
                     .builder()
                     .firstName(traineeId.getFirstName())
                     .lastName(traineeId.getLastName())

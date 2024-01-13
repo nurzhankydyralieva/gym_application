@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainerProfileResponseDTO {
+public class TrainerProfileSelectResponseDTO {
     private String firstName;
     private String lastName;
     private TrainingType specialization;

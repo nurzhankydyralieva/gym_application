@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainerProfileRequestDTO {
+public class TrainerActivateDeActivateDTO {
     private String userName;
+    private Boolean isActive;
 }

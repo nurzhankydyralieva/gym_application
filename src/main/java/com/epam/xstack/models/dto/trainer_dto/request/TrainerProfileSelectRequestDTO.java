@@ -1,4 +1,4 @@
-package com.epam.xstack.models.dto.trainee_dto.request;
+package com.epam.xstack.models.dto.trainer_dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TraineeProfileRequestDTO {
+public class TrainerProfileSelectRequestDTO {
     private String userName;
 }
