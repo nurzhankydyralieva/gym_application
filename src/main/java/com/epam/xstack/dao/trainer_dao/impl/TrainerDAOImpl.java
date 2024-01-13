@@ -4,10 +4,13 @@ import com.epam.xstack.dao.trainer_dao.TrainerDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
 import com.epam.xstack.mapper.trainer_mapper.TrainerProfileRequestMapper;
 import com.epam.xstack.mapper.trainer_mapper.TrainerRegistrationRequestMapper;
+import com.epam.xstack.mapper.trainer_mapper.TrainerProfileUpdateRequestMapper;
 import com.epam.xstack.models.dto.trainer_dto.request.TrainerProfileRequestDTO;
 import com.epam.xstack.models.dto.trainer_dto.request.TrainerRegistrationRequestDTO;
+import com.epam.xstack.models.dto.trainer_dto.request.TrainerProfileUpdateRequestDTO;
 import com.epam.xstack.models.dto.trainer_dto.response.TrainerProfileResponseDTO;
 import com.epam.xstack.models.dto.trainer_dto.response.TrainerRegistrationResponseDTO;
+import com.epam.xstack.models.dto.trainer_dto.response.TrainerProfileUpdateResponseDTO;
 import com.epam.xstack.models.entity.Trainer;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -24,6 +27,32 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final SessionFactory sessionFactory;
     private final TrainerRegistrationRequestMapper registrationRequestMapper;
     private final TrainerProfileRequestMapper getTrainerProfileRequestMapper;
+    private final TrainerProfileUpdateRequestMapper updateTrainerProfileRequestMapper;
+    @Override
+    @Transactional
+    public TrainerProfileUpdateResponseDTO updateTrainerProfile(UUID id, TrainerProfileUpdateRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainer trainer = updateTrainerProfileRequestMapper.toEntity(requestDTO);
+        Trainer trainerToBeUpdated = session.get(Trainer.class, id);
+
+        trainerToBeUpdated.setUserName(trainer.getUserName());
+        trainerToBeUpdated.setFirstName(trainer.getFirstName());
+        trainerToBeUpdated.setLastName(trainer.getLastName());
+        trainerToBeUpdated.setIsActive(trainer.getIsActive());
+
+        session.update(trainerToBeUpdated);
+
+        updateTrainerProfileRequestMapper.toDto(trainer);
+        return TrainerProfileUpdateResponseDTO
+                .builder()
+                .userName(trainerToBeUpdated.getUserName())
+                .firstName(trainerToBeUpdated.getFirstName())
+                .lastName(trainerToBeUpdated.getLastName())
+                .specialization(trainerToBeUpdated.getSpecialization())
+                .isActive(trainerToBeUpdated.getIsActive())
+                .trainees(TraineeMapper.INSTANCE.toDtos(trainerToBeUpdated.getTraineeList()))
+                .build();
+    }
     @Override
     @Transactional
     public TrainerProfileResponseDTO selectTrainerProfileByUserName(UUID id, TrainerProfileRequestDTO requestDTO) {
