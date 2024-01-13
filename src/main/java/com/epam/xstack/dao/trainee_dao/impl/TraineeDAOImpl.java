@@ -1,17 +1,21 @@
 package com.epam.xstack.dao.trainee_dao.impl;
 
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
+import com.epam.xstack.mapper.trainee_mapper.TraineeActivateDeActivateMapper;
 import com.epam.xstack.mapper.trainee_mapper.TraineeProfileRequestMapper;
 import com.epam.xstack.mapper.trainee_mapper.TraineeRegistrationRequestMapper;
 import com.epam.xstack.mapper.trainee_mapper.TraineeProfileUpdateRequestMapper;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
 import com.epam.xstack.models.entity.Trainee;
+import com.epam.xstack.models.enums.Code;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,6 +32,29 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final TraineeRegistrationRequestMapper registrationRequestMapper;
     private final TraineeProfileRequestMapper getTraineeProfileRequestMapper;
     private final TraineeProfileUpdateRequestMapper updateTraineeProfileRequestMapper;
+    private final TraineeActivateDeActivateMapper activateDeActivateTraineeMapper;
+
+    @Override
+    @Transactional
+    public TraineeOkResponseDTO activateDe_ActivateTrainee(UUID id, TraineeActivateDeActivateDTO dto) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainee trainee = activateDeActivateTraineeMapper.toEntity(dto);
+        Trainee existingTrainee = session.get(Trainee.class, id);
+
+        if (existingTrainee.getId() != null) {
+            existingTrainee.setUserName(trainee.getUserName());
+            existingTrainee.setIsActive(trainee.getIsActive());
+            session.update(existingTrainee);
+            activateDeActivateTraineeMapper.toDto(trainee);
+            return TraineeOkResponseDTO
+                    .builder()
+                    .code(Code.STATUS_200_OK)
+                    .response("Activate DeActivate Trainee updated")
+                    .build();
+        } else {
+            throw new RuntimeException("Not available");
+        }
+    }
     @Override
     @Transactional
     public TraineeProfileUpdateResponseDTO updateTraineeProfile(UUID id, TraineeProfileUpdateRequestDTO requestDTO) {

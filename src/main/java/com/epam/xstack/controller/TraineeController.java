@@ -1,8 +1,10 @@
 package com.epam.xstack.controller;
 
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
@@ -30,5 +32,9 @@ public class TraineeController {
     @PutMapping("/update/{id}")
     public ResponseEntity<TraineeProfileUpdateResponseDTO> updateUser(@PathVariable("id") UUID id, @RequestBody TraineeProfileUpdateRequestDTO requestDTO) {
         return new ResponseEntity<>(traineeService.updateTraineeProfile(id, requestDTO), HttpStatus.OK);
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<TraineeOkResponseDTO> updateActivateDe_ActivateTrainer(@PathVariable("id") UUID id, @RequestBody TraineeActivateDeActivateDTO dto) {
+        return new ResponseEntity<>(traineeService.activateDe_ActivateTrainee(id, dto), HttpStatus.OK);
     }
 }

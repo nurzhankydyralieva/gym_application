@@ -1,9 +1,11 @@
 package com.epam.xstack.service.trainee_service.impl;
 
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
 import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
@@ -29,5 +31,9 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public TraineeProfileUpdateResponseDTO updateTraineeProfile(UUID id, TraineeProfileUpdateRequestDTO requestDTO) {
         return traineeDAO.updateTraineeProfile(id, requestDTO);
+    }
+    @Override
+    public TraineeOkResponseDTO activateDe_ActivateTrainee(UUID id, TraineeActivateDeActivateDTO dto) {
+        return traineeDAO.activateDe_ActivateTrainee(id, dto);
     }
 }
