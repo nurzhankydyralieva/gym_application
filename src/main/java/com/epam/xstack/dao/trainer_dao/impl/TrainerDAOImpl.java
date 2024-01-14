@@ -26,19 +26,20 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final TrainerProfileUpdateRequestMapper updateTrainerProfileRequestMapper;
     private final TrainerActivateDeActivateMapper activateDeActivateTrainerMapper;
     private final TrainerTrainingsListMapper trainerTrainingsListMapper;
+
     @Override
     @Transactional
-    public TrainerTrainingsListResponseDTO selectTrainerTrainingsList(UUID id, TrainerTrainingsListRequestDTO requestDTO){
+    public TrainerTrainingsListResponseDTO selectTrainerTrainingsList(UUID id, TrainerTrainingsListRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainerId = session.get(Trainer.class, id);
-        Trainer trainer = trainerTrainingsListMapper.toEntity(requestDTO);
+        trainerTrainingsListMapper.toEntity(requestDTO);
 
-        if (trainerId != null){
+        if (trainerId != null) {
             return TrainerTrainingsListResponseDTO
                     .builder()
                     .trainings(TrainingListMapper.INSTANCE.toDtos(trainerId.getTrainings()))
                     .build();
-        }else {
+        } else {
             throw new RuntimeException("Not exists");
         }
 

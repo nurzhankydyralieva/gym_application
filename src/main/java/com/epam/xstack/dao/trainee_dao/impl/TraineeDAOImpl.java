@@ -3,6 +3,7 @@ package com.epam.xstack.dao.trainee_dao.impl;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
 import com.epam.xstack.mapper.trainee_mapper.*;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
+import com.epam.xstack.mapper.training_mapper.TraineeTrainingListMapper;
 import com.epam.xstack.models.dto.trainee_dto.request.*;
 import com.epam.xstack.models.dto.trainee_dto.response.*;
 import com.epam.xstack.models.entity.Trainee;
@@ -24,6 +25,23 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final TraineeProfileSelectRequestMapper getTraineeProfileRequestMapper;
     private final TraineeProfileUpdateRequestMapper updateTraineeProfileRequestMapper;
     private final TraineeActivateDeActivateMapper activateDeActivateTraineeMapper;
+    private final TraineeTrainingsListMapper traineeTrainingsListMapper;
+
+    @Override
+    @Transactional
+    public TraineeTrainingsListResponseDTO selectTraineeTrainingsList(UUID id, TraineeTrainingsListRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainee traineeId = session.get(Trainee.class, id);
+        traineeTrainingsListMapper.toEntity(requestDTO);
+        if (traineeId != null) {
+            return TraineeTrainingsListResponseDTO
+                    .builder()
+                    .trainings(TraineeTrainingListMapper.INSTANCE.toDtos(traineeId.getTrainings()))
+                    .build();
+        } else {
+            throw new RuntimeException("Not exists");
+        }
+    }
 
 
     @Override
@@ -47,6 +65,7 @@ public class TraineeDAOImpl implements TraineeDAO {
             throw new RuntimeException("Not available");
         }
     }
+
     @Override
     @Transactional
     public TraineeProfileUpdateResponseDTO updateTraineeProfile(UUID id, TraineeProfileUpdateRequestDTO requestDTO) {
@@ -99,6 +118,7 @@ public class TraineeDAOImpl implements TraineeDAO {
             throw new RuntimeException("Not available");
         }
     }
+
     @Override
     @Transactional
     public TraineeRegistrationResponseDTO saveTrainee(TraineeRegistrationRequestDTO requestDTO) {
@@ -117,6 +137,7 @@ public class TraineeDAOImpl implements TraineeDAO {
                 .password(password)
                 .build();
     }
+
     private static String generateRandomPassword(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?";
         Random random = new Random();
@@ -128,6 +149,7 @@ public class TraineeDAOImpl implements TraineeDAO {
         }
         return password.toString();
     }
+
     @Override
     @Transactional
     public TraineeOkResponseDTO deleteTraineeByUserName(UUID id, TraineeProfileSelectRequestDTO requestDTO) {
@@ -147,4 +169,6 @@ public class TraineeDAOImpl implements TraineeDAO {
         }
 
     }
+
+
 }

@@ -1,13 +1,7 @@
 package com.epam.xstack.controller;
 
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileSelectRequestDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileSelectResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
+import com.epam.xstack.models.dto.trainee_dto.request.*;
+import com.epam.xstack.models.dto.trainee_dto.response.*;
 import com.epam.xstack.service.trainee_service.TraineeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,5 +47,10 @@ public class TraineeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<TraineeOkResponseDTO> deleteTraineeByUserName(@PathVariable("id") UUID id, @RequestBody TraineeProfileSelectRequestDTO requestDTO) {
         return new ResponseEntity<>(traineeService.deleteTraineeByUserName(id, requestDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/select/{id}")
+    public ResponseEntity<TraineeTrainingsListResponseDTO> select(@PathVariable("id") UUID id, @RequestBody TraineeTrainingsListRequestDTO requestDTO) {
+        return new ResponseEntity<>(traineeService.selectTraineeTrainingsList(id, requestDTO), HttpStatus.OK);
     }
 }
