@@ -1,19 +1,10 @@
 package com.epam.xstack.dao.trainee_dao.impl;
 
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
-import com.epam.xstack.mapper.trainee_mapper.TraineeActivateDeActivateMapper;
-import com.epam.xstack.mapper.trainee_mapper.TraineeProfileSelectRequestMapper;
-import com.epam.xstack.mapper.trainee_mapper.TraineeRegistrationRequestMapper;
-import com.epam.xstack.mapper.trainee_mapper.TraineeProfileUpdateRequestMapper;
+import com.epam.xstack.mapper.trainee_mapper.*;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileSelectRequestDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeRegistrationRequestDTO;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileUpdateRequestDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeOkResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileSelectResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeRegistrationResponseDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileUpdateResponseDTO;
+import com.epam.xstack.models.dto.trainee_dto.request.*;
+import com.epam.xstack.models.dto.trainee_dto.response.*;
 import com.epam.xstack.models.entity.Trainee;
 import com.epam.xstack.models.enums.Code;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +24,7 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final TraineeProfileSelectRequestMapper getTraineeProfileRequestMapper;
     private final TraineeProfileUpdateRequestMapper updateTraineeProfileRequestMapper;
     private final TraineeActivateDeActivateMapper activateDeActivateTraineeMapper;
+
 
     @Override
     @Transactional

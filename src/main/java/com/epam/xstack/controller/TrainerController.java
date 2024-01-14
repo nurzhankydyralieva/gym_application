@@ -3,7 +3,6 @@ package com.epam.xstack.controller;
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
 import com.epam.xstack.models.dto.trainer_dto.request.*;
 import com.epam.xstack.models.dto.trainer_dto.response.*;
-import com.epam.xstack.models.entity.Trainer;
 import com.epam.xstack.service.trainer_service.TrainerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +48,6 @@ public class TrainerController {
 
     @GetMapping("/select/{id}")
     public ResponseEntity<TrainerTrainingsListResponseDTO> select(@PathVariable("id") UUID id, @RequestBody TrainerTrainingsListRequestDTO requestDTO) {
-        return new ResponseEntity<>(trainerDAO.select(id, requestDTO), HttpStatus.OK);
+        return new ResponseEntity<>(trainerService.selectTrainerTrainingsList(id, requestDTO), HttpStatus.OK);
     }
 }

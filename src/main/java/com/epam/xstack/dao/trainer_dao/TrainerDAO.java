@@ -2,7 +2,6 @@ package com.epam.xstack.dao.trainer_dao;
 
 import com.epam.xstack.models.dto.trainer_dto.request.*;
 import com.epam.xstack.models.dto.trainer_dto.response.*;
-import com.epam.xstack.models.entity.Trainer;
 
 import java.util.UUID;
 
@@ -15,5 +14,5 @@ public interface TrainerDAO {
 
     TrainerOkResponseDTO activateDe_ActivateTrainer(UUID id, TrainerActivateDeActivateDTO dto);
 
-    TrainerTrainingsListResponseDTO select(UUID id, TrainerTrainingsListRequestDTO requestDTO);
+    TrainerTrainingsListResponseDTO selectTrainerTrainingsList(UUID id, TrainerTrainingsListRequestDTO requestDTO);
 }

@@ -25,7 +25,24 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final TrainerProfileSelectRequestMapper getTrainerProfileRequestMapper;
     private final TrainerProfileUpdateRequestMapper updateTrainerProfileRequestMapper;
     private final TrainerActivateDeActivateMapper activateDeActivateTrainerMapper;
+    private final TrainerTrainingsListMapper trainerTrainingsListMapper;
+    @Override
+    @Transactional
+    public TrainerTrainingsListResponseDTO selectTrainerTrainingsList(UUID id, TrainerTrainingsListRequestDTO requestDTO){
+        Session session = sessionFactory.getCurrentSession();
+        Trainer trainerId = session.get(Trainer.class, id);
+        Trainer trainer = trainerTrainingsListMapper.toEntity(requestDTO);
 
+        if (trainerId != null){
+            return TrainerTrainingsListResponseDTO
+                    .builder()
+                    .trainings(TrainingListMapper.INSTANCE.toDtos(trainerId.getTrainings()))
+                    .build();
+        }else {
+            throw new RuntimeException("Not exists");
+        }
+
+    }
 
     @Override
     @Transactional
@@ -75,24 +92,7 @@ public class TrainerDAOImpl implements TrainerDAO {
                 .trainees(TraineeMapper.INSTANCE.toDtos(trainerToBeUpdated.getTraineeList()))
                 .build();
     }
-    private final TrainerTrainingsListMapper trainerTrainingsListMapper;
-    @Override
-    @Transactional
-    public TrainerTrainingsListResponseDTO select(UUID id, TrainerTrainingsListRequestDTO requestDTO){
-        Session session = sessionFactory.getCurrentSession();
-        Trainer trainerId = session.get(Trainer.class, id);
-        Trainer trainer = trainerTrainingsListMapper.toEntity(requestDTO);
 
-        if (trainerId != null){
-            return TrainerTrainingsListResponseDTO
-                    .builder()
-                    .trainings(TrainingListMapper.INSTANCE.toDtos(trainerId.getTrainings()))
-                    .build();
-        }else {
-            throw new RuntimeException("Not exists");
-        }
-
-    }
 
     @Override
     @Transactional
