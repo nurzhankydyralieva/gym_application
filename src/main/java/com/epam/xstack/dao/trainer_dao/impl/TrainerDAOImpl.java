@@ -2,18 +2,10 @@ package com.epam.xstack.dao.trainer_dao.impl;
 
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
-import com.epam.xstack.mapper.trainer_mapper.TrainerActivateDeActivateMapper;
-import com.epam.xstack.mapper.trainer_mapper.TrainerProfileSelectRequestMapper;
-import com.epam.xstack.mapper.trainer_mapper.TrainerRegistrationRequestMapper;
-import com.epam.xstack.mapper.trainer_mapper.TrainerProfileUpdateRequestMapper;
-import com.epam.xstack.models.dto.trainer_dto.request.TrainerActivateDeActivateDTO;
-import com.epam.xstack.models.dto.trainer_dto.request.TrainerProfileSelectRequestDTO;
-import com.epam.xstack.models.dto.trainer_dto.request.TrainerRegistrationRequestDTO;
-import com.epam.xstack.models.dto.trainer_dto.request.TrainerProfileUpdateRequestDTO;
-import com.epam.xstack.models.dto.trainer_dto.response.TrainerOkResponseDTO;
-import com.epam.xstack.models.dto.trainer_dto.response.TrainerProfileSelectResponseDTO;
-import com.epam.xstack.models.dto.trainer_dto.response.TrainerRegistrationResponseDTO;
-import com.epam.xstack.models.dto.trainer_dto.response.TrainerProfileUpdateResponseDTO;
+import com.epam.xstack.mapper.trainer_mapper.*;
+import com.epam.xstack.mapper.training_mapper.TrainingListMapper;
+import com.epam.xstack.models.dto.trainer_dto.request.*;
+import com.epam.xstack.models.dto.trainer_dto.response.*;
 import com.epam.xstack.models.entity.Trainer;
 import com.epam.xstack.models.enums.Code;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +26,7 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final TrainerProfileUpdateRequestMapper updateTrainerProfileRequestMapper;
     private final TrainerActivateDeActivateMapper activateDeActivateTrainerMapper;
 
+
     @Override
     @Transactional
     public TrainerOkResponseDTO activateDe_ActivateTrainer(UUID id, TrainerActivateDeActivateDTO dto) {
@@ -51,10 +44,12 @@ public class TrainerDAOImpl implements TrainerDAO {
                     .code(Code.STATUS_200_OK)
                     .response("Activate DeActivate Trainer updated")
                     .build();
-        }else {
+        } else {
             throw new RuntimeException("Not available");
         }
     }
+
+
     @Override
     @Transactional
     public TrainerProfileUpdateResponseDTO updateTrainerProfile(UUID id, TrainerProfileUpdateRequestDTO requestDTO) {
@@ -80,6 +75,25 @@ public class TrainerDAOImpl implements TrainerDAO {
                 .trainees(TraineeMapper.INSTANCE.toDtos(trainerToBeUpdated.getTraineeList()))
                 .build();
     }
+    private final TrainerTrainingsListMapper trainerTrainingsListMapper;
+    @Override
+    @Transactional
+    public TrainerTrainingsListResponseDTO select(UUID id, TrainerTrainingsListRequestDTO requestDTO){
+        Session session = sessionFactory.getCurrentSession();
+        Trainer trainerId = session.get(Trainer.class, id);
+        Trainer trainer = trainerTrainingsListMapper.toEntity(requestDTO);
+
+        if (trainerId != null){
+            return TrainerTrainingsListResponseDTO
+                    .builder()
+                    .trainings(TrainingListMapper.INSTANCE.toDtos(trainerId.getTrainings()))
+                    .build();
+        }else {
+            throw new RuntimeException("Not exists");
+        }
+
+    }
+
     @Override
     @Transactional
     public TrainerProfileSelectResponseDTO selectTrainerProfileByUserName(UUID id, TrainerProfileSelectRequestDTO requestDTO) {
@@ -103,6 +117,7 @@ public class TrainerDAOImpl implements TrainerDAO {
         }
 
     }
+
     @Override
     @Transactional
     public TrainerRegistrationResponseDTO saveTrainer(TrainerRegistrationRequestDTO requestDTO) {

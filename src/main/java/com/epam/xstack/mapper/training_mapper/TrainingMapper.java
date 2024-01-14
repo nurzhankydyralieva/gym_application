@@ -10,8 +10,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TrainingMapper {
-
-
     @Mapping(source = "training.trainee", target = "traineeUserName")
     @Mapping(source = "training.trainer", target = "trainerUserName")
     TrainingSaveRequestDTO toDto(Training training);
@@ -22,5 +20,6 @@ public interface TrainingMapper {
     List<TrainingSaveRequestDTO> toDtos(List<Training> trainings);
 
     List<Training> toEntities(List<TrainingSaveRequestDTO> requestDTOS);
+
 }
 
