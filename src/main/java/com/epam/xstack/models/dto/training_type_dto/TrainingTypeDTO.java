@@ -1,16 +1,17 @@
 package com.epam.xstack.models.dto.training_type_dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainingTypeDTO {
-
-    private Long id;
-    private String trainingType;
+    Long id;
+    @NotBlank
+    String trainingType;
 }

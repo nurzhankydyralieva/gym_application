@@ -41,6 +41,16 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public TraineeTrainingsListResponseDTO selectTraineeTrainingsList(UUID id, TraineeTrainingsListRequestDTO requestDTO) {
-        return traineeDAO.selectTraineeTrainingsList(id,requestDTO);
+        return traineeDAO.selectTraineeTrainingsList(id, requestDTO);
+    }
+
+    @Override
+    public TraineesTrainerListUpdateResponseDTO updateTraineesTrainerList(UUID id, TraineesTrainerListUpdateRequestDTO requestDTO) {
+        return traineeDAO.updateTraineesTrainerList(id, requestDTO);
+    }
+
+    @Override
+    public TraineesTrainerActiveAndNotAssignedResponseDTO selectNotAssignedOnTraineeActiveTrainers(UUID id, TraineesTrainerActiveAndNotAssignedRequestDTO requestDTO) {
+        return traineeDAO.selectNotAssignedOnTraineeActiveTrainers(id, requestDTO);
     }
 }

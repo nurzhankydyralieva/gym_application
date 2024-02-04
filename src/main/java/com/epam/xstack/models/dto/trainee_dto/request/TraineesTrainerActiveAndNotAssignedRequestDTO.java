@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TraineeProfileSelectRequestDTO {
-     @NotEmpty(message = "User name should not be empty")
-     String userName;
+public class TraineesTrainerActiveAndNotAssignedRequestDTO {
+    @NotEmpty(message = "User name should not be empty")
+    String userName;
 }

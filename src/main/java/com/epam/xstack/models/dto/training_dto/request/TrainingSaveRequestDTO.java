@@ -1,23 +1,26 @@
 package com.epam.xstack.models.dto.training_dto.request;
 
-import com.epam.xstack.models.dto.trainer_dto.response.TrainerDTO;
 import com.epam.xstack.models.entity.Trainee;
 import com.epam.xstack.models.entity.Trainer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainingSaveRequestDTO {
-    private Trainee traineeUserName;
-    private Trainer trainerUserName;
-    private String trainingName;
-    private Date trainingDate;
-    private Number trainingDuration;
+    @NotBlank(message = "Trainee user name should not be empty")
+    Trainee traineeUserName;
+    @NotBlank(message = "Trainer user name should not be empty")
+    Trainer trainerUserName;
+    @NotBlank(message = "Training name should not be empty")
+    String trainingName;
+
+    Date trainingDate;
+    Number trainingDuration;
 }

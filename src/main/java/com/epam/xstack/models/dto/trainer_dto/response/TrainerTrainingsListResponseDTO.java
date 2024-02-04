@@ -1,10 +1,8 @@
 package com.epam.xstack.models.dto.trainer_dto.response;
 
-import com.epam.xstack.models.dto.training_dto.request.TrainingListDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.epam.xstack.models.dto.training_dto.request.TrainerTrainingDTO;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
@@ -12,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerTrainingsListResponseDTO {
-    private List<TrainingListDTO> trainings;
+     List<TrainerTrainingDTO> trainings;
 }

@@ -1,6 +1,7 @@
 package com.epam.xstack.dao.authentication_dao.impl;
 
 import com.epam.xstack.dao.authentication_dao.AuthenticationDAO;
+import com.epam.xstack.mapper.authentication_mapper.AuthenticationChangeLoginRequestMapper;
 import com.epam.xstack.mapper.authentication_mapper.AuthenticationRequestMapper;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationChangeLoginRequestDTO;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationRequestDTO;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class AuthenticationDAOImpl implements AuthenticationDAO {
     private final SessionFactory sessionFactory;
     private final AuthenticationRequestMapper authenticationRequestMapper;
+    private final AuthenticationChangeLoginRequestMapper requestMapper;
 
     @Override
     @Transactional
@@ -40,13 +42,16 @@ public class AuthenticationDAOImpl implements AuthenticationDAO {
             throw new RuntimeException("Not available");
         }
     }
+
     @Override
     @Transactional
     public AuthenticationResponseDTO authenticationChangeLogin(UUID id, AuthenticationChangeLoginRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         User userToBeUpdated = session.get(User.class, id);
+        User user = requestMapper.toEntity(requestDTO);
 
-        if (userToBeUpdated.getId() == id) {
+
+        if (userToBeUpdated.getPassword().equals(user.getPassword())) {
             userToBeUpdated.setUserName(requestDTO.getUserName());
             userToBeUpdated.setPassword(requestDTO.getNewPassword());
             session.update(userToBeUpdated);

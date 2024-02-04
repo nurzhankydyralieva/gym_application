@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TrainerRegistrationRequestMapper {
+
     TrainerRegistrationRequestDTO toDto(Trainer trainer);
 
     Trainer toEntity(TrainerRegistrationRequestDTO requestDTO);

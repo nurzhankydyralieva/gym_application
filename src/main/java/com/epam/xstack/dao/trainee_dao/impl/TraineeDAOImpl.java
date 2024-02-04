@@ -3,7 +3,7 @@ package com.epam.xstack.dao.trainee_dao.impl;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
 import com.epam.xstack.mapper.trainee_mapper.*;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
-import com.epam.xstack.mapper.training_mapper.TraineeTrainingListMapper;
+import com.epam.xstack.mapper.training_mapper.TraineeTrainingMapper;
 import com.epam.xstack.models.dto.trainee_dto.request.*;
 import com.epam.xstack.models.dto.trainee_dto.response.*;
 import com.epam.xstack.models.entity.Trainee;
@@ -27,22 +27,6 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final TraineeActivateDeActivateMapper activateDeActivateTraineeMapper;
     private final TraineeTrainingsListMapper traineeTrainingsListMapper;
 
-    @Override
-    @Transactional
-    public TraineeTrainingsListResponseDTO selectTraineeTrainingsList(UUID id, TraineeTrainingsListRequestDTO requestDTO) {
-        Session session = sessionFactory.getCurrentSession();
-        Trainee traineeId = session.get(Trainee.class, id);
-        traineeTrainingsListMapper.toEntity(requestDTO);
-        if (traineeId != null) {
-            return TraineeTrainingsListResponseDTO
-                    .builder()
-                    .trainings(TraineeTrainingListMapper.INSTANCE.toDtos(traineeId.getTrainings()))
-                    .build();
-        } else {
-            throw new RuntimeException("Not exists");
-        }
-    }
-
 
     @Override
     @Transactional
@@ -51,9 +35,8 @@ public class TraineeDAOImpl implements TraineeDAO {
         Trainee trainee = activateDeActivateTraineeMapper.toEntity(dto);
         Trainee existingTrainee = session.get(Trainee.class, id);
 
-        if (existingTrainee.getId() != null) {
-            existingTrainee.setUserName(trainee.getUserName());
-            existingTrainee.setIsActive(trainee.getIsActive());
+        if (existingTrainee.getUserName().equals(dto.getUserName())) {
+            existingTrainee.setIsActive(dto.getIsActive());
             session.update(existingTrainee);
             activateDeActivateTraineeMapper.toDto(trainee);
             return TraineeOkResponseDTO
@@ -66,22 +49,46 @@ public class TraineeDAOImpl implements TraineeDAO {
         }
     }
 
+    private final TraineesTrainerListUpdateMapper traineesTrainerListUpdateMapper;
+
+    @Override
+    @Transactional
+    public TraineesTrainerListUpdateResponseDTO updateTraineesTrainerList(UUID id, TraineesTrainerListUpdateRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainee trainee = traineesTrainerListUpdateMapper.toEntity(requestDTO);
+        Trainee traineeToBeUpdated = session.get(Trainee.class, id);
+
+        if (traineeToBeUpdated.getId() == id) {
+            traineeToBeUpdated.setTrainers(trainee.getTrainers());
+
+            session.update(traineeToBeUpdated);
+            traineesTrainerListUpdateMapper.toDto(trainee);
+        }
+
+        return TraineesTrainerListUpdateResponseDTO
+                .builder()
+                .trainers(TrainerMapper.INSTANCE.toDtos(traineeToBeUpdated.getTrainers()))
+                .build();
+
+    }
+
     @Override
     @Transactional
     public TraineeProfileUpdateResponseDTO updateTraineeProfile(UUID id, TraineeProfileUpdateRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = updateTraineeProfileRequestMapper.toEntity(requestDTO);
         Trainee traineeToBeUpdated = session.get(Trainee.class, id);
+        if (traineeToBeUpdated.getId() == id) {
+            traineeToBeUpdated.setUserName(trainee.getUserName());
+            traineeToBeUpdated.setFirstName(trainee.getFirstName());
+            traineeToBeUpdated.setLastName(trainee.getLastName());
+            traineeToBeUpdated.setDateOfBirth(trainee.getDateOfBirth());
+            traineeToBeUpdated.setAddress(trainee.getAddress());
+            traineeToBeUpdated.setIsActive(trainee.getIsActive());
 
-        traineeToBeUpdated.setUserName(trainee.getUserName());
-        traineeToBeUpdated.setFirstName(trainee.getFirstName());
-        traineeToBeUpdated.setLastName(trainee.getLastName());
-        traineeToBeUpdated.setDateOfBirth(trainee.getDateOfBirth());
-        traineeToBeUpdated.setAddress(trainee.getAddress());
-        traineeToBeUpdated.setIsActive(trainee.getIsActive());
-
-        session.update(traineeToBeUpdated);
-        updateTraineeProfileRequestMapper.toDto(trainee);
+            session.update(traineeToBeUpdated);
+            updateTraineeProfileRequestMapper.toDto(trainee);
+        }
 
         return TraineeProfileUpdateResponseDTO
                 .builder()
@@ -93,6 +100,23 @@ public class TraineeDAOImpl implements TraineeDAO {
                 .isActive(traineeToBeUpdated.getIsActive())
                 .trainers(TrainerMapper.INSTANCE.toDtos(traineeToBeUpdated.getTrainers()))
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public TraineeTrainingsListResponseDTO selectTraineeTrainingsList(UUID id, TraineeTrainingsListRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainee traineeId = session.get(Trainee.class, id);
+        Trainee trainee = traineeTrainingsListMapper.toEntity(requestDTO);
+        if (traineeId.getUserName().equals(trainee.getUserName())) {
+            traineeTrainingsListMapper.toDto(trainee);
+            return TraineeTrainingsListResponseDTO
+                    .builder()
+                    .trainings(TraineeTrainingMapper.INSTANCE.toDtos(traineeId.getTrainings()))
+                    .build();
+        } else {
+            throw new RuntimeException("Not exists");
+        }
     }
 
     @Override
@@ -124,6 +148,8 @@ public class TraineeDAOImpl implements TraineeDAO {
     public TraineeRegistrationResponseDTO saveTrainee(TraineeRegistrationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = registrationRequestMapper.toEntity(requestDTO);
+        trainee.setLastName(requestDTO.getLastName());
+        trainee.setFirstName(requestDTO.getFirstName());
         session.save(trainee);
         TraineeRegistrationRequestDTO newTrainee = registrationRequestMapper.toDto(trainee);
         String password = generateRandomPassword(10);
@@ -170,5 +196,19 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     }
 
+    @Override
+    @Transactional
+    public TraineesTrainerActiveAndNotAssignedResponseDTO selectNotAssignedOnTraineeActiveTrainers(UUID id, TraineesTrainerActiveAndNotAssignedRequestDTO requestDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Trainee traineeUserName = session.get(Trainee.class, id);
+        if (traineeUserName.getUserName().equals(requestDTO.getUserName()) && traineeUserName.getIsActive() && !traineeUserName.getIsAssigned()) {
+            return TraineesTrainerActiveAndNotAssignedResponseDTO
+                    .builder()
+                    .trainers(TrainerMapper.INSTANCE.toDtos(traineeUserName.getTrainers()))
+                    .build();
+        } else {
+            throw new RuntimeException("Not available");
+        }
+    }
 
 }

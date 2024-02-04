@@ -1,19 +1,19 @@
 package com.epam.xstack.models.dto.trainee_dto.request;
 
+import com.epam.xstack.models.dto.trainer_dto.response.TrainerDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TraineeActivateDeActivateDTO {
+public class TraineesTrainerListUpdateRequestDTO {
     @NotEmpty(message = "User name should not be empty")
-    String userName;
-    @NotNull
-    Boolean isActive;
+    private String userName;
+    Collection<TrainerDTO> trainers;
 }

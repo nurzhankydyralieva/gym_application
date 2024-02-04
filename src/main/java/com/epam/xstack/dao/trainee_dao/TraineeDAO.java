@@ -2,6 +2,7 @@ package com.epam.xstack.dao.trainee_dao;
 
 import com.epam.xstack.models.dto.trainee_dto.request.*;
 import com.epam.xstack.models.dto.trainee_dto.response.*;
+import com.epam.xstack.models.entity.Trainee;
 
 import java.util.UUID;
 
@@ -16,4 +17,6 @@ public interface TraineeDAO {
 
     TraineeOkResponseDTO deleteTraineeByUserName(UUID id, TraineeProfileSelectRequestDTO requestDTO);
     TraineeTrainingsListResponseDTO selectTraineeTrainingsList(UUID id, TraineeTrainingsListRequestDTO requestDTO);
+    TraineesTrainerListUpdateResponseDTO updateTraineesTrainerList(UUID id, TraineesTrainerListUpdateRequestDTO requestDTO);
+    TraineesTrainerActiveAndNotAssignedResponseDTO selectNotAssignedOnTraineeActiveTrainers(UUID id,TraineesTrainerActiveAndNotAssignedRequestDTO requestDTO);
 }

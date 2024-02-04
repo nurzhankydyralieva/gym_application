@@ -2,10 +2,14 @@ package com.epam.xstack.dao.trainer_dao.impl;
 
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
+import com.epam.xstack.mapper.trainee_mapper.TraineeProfileSelectRequestMapper;
 import com.epam.xstack.mapper.trainer_mapper.*;
 import com.epam.xstack.mapper.training_mapper.TrainingListMapper;
+import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileSelectRequestDTO;
+import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileSelectResponseDTO;
 import com.epam.xstack.models.dto.trainer_dto.request.*;
 import com.epam.xstack.models.dto.trainer_dto.response.*;
+import com.epam.xstack.models.entity.Trainee;
 import com.epam.xstack.models.entity.Trainer;
 import com.epam.xstack.models.enums.Code;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final TrainerProfileUpdateRequestMapper updateTrainerProfileRequestMapper;
     private final TrainerActivateDeActivateMapper activateDeActivateTrainerMapper;
     private final TrainerTrainingsListMapper trainerTrainingsListMapper;
+
 
     @Override
     @Transactional
@@ -52,9 +57,8 @@ public class TrainerDAOImpl implements TrainerDAO {
         Trainer trainer = activateDeActivateTrainerMapper.toEntity(dto);
         Trainer existingTrainer = session.get(Trainer.class, id);
 
-        if (existingTrainer.getId() != null) {
-            existingTrainer.setUserName(trainer.getUserName());
-            existingTrainer.setIsActive(trainer.getIsActive());
+        if (existingTrainer.getUserName().equals(dto.getUserName())) {
+            existingTrainer.setIsActive(dto.getIsActive());
             session.update(existingTrainer);
             activateDeActivateTrainerMapper.toDto(trainer);
             return TrainerOkResponseDTO
@@ -74,15 +78,16 @@ public class TrainerDAOImpl implements TrainerDAO {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainer = updateTrainerProfileRequestMapper.toEntity(requestDTO);
         Trainer trainerToBeUpdated = session.get(Trainer.class, id);
+        if (trainerToBeUpdated.getId() == id) {
+            trainerToBeUpdated.setUserName(requestDTO.getUserName());
+            trainerToBeUpdated.setFirstName(requestDTO.getFirstName());
+            trainerToBeUpdated.setLastName(requestDTO.getLastName());
+            trainerToBeUpdated.setIsActive(requestDTO.getIsActive());
 
-        trainerToBeUpdated.setUserName(trainer.getUserName());
-        trainerToBeUpdated.setFirstName(trainer.getFirstName());
-        trainerToBeUpdated.setLastName(trainer.getLastName());
-        trainerToBeUpdated.setIsActive(trainer.getIsActive());
+            session.update(trainerToBeUpdated);
+            updateTrainerProfileRequestMapper.toDto(trainer);
+        }
 
-        session.update(trainerToBeUpdated);
-
-        updateTrainerProfileRequestMapper.toDto(trainer);
         return TrainerProfileUpdateResponseDTO
                 .builder()
                 .userName(trainerToBeUpdated.getUserName())
@@ -102,7 +107,7 @@ public class TrainerDAOImpl implements TrainerDAO {
         Trainer trainer = getTrainerProfileRequestMapper.toEntity(requestDTO);
         Trainer trainerId = session.get(Trainer.class, id);
 
-        if (trainerId.getUserName().equals(trainer.getUserName())) {
+        if (trainerId.getUserName().equals(requestDTO.getUserName())) {
             getTrainerProfileRequestMapper.toDto(trainer);
 
             return TrainerProfileSelectResponseDTO
@@ -123,9 +128,11 @@ public class TrainerDAOImpl implements TrainerDAO {
     @Transactional
     public TrainerRegistrationResponseDTO saveTrainer(TrainerRegistrationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
-
         Trainer trainer = registrationRequestMapper.toEntity(requestDTO);
+        trainer.setLastName(requestDTO.getLastName());
+        trainer.setFirstName(requestDTO.getFirstName());
         session.save(trainer);
+
         TrainerRegistrationRequestDTO newTrainer = registrationRequestMapper.toDto(trainer);
         String password = generateRandomPassword(10);
         trainer.setUserName(newTrainer.getFirstName() + "." + newTrainer.getLastName());
@@ -151,4 +158,6 @@ public class TrainerDAOImpl implements TrainerDAO {
         }
         return password.toString();
     }
+
+
 }

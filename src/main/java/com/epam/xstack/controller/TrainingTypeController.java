@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,11 +21,11 @@ public class TrainingTypeController {
 
     @ApiOperation(value = "Save Training Type to database")
     @PostMapping("/save")
-    public ResponseEntity<TrainingTypeDTO> save(@RequestBody TrainingTypeDTO trainingTypeDTO) {
+    public ResponseEntity<TrainingTypeDTO> save(@Valid @RequestBody TrainingTypeDTO trainingTypeDTO) {
         return new ResponseEntity<>(trainingTypeService.save(trainingTypeDTO), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Select all Trainings")
+    @ApiOperation(value = "Get all Trainings")
     @GetMapping("/all")
     public ResponseEntity<List<TrainingTypeDTO>> findAll() {
         return new ResponseEntity<>(trainingTypeService.findAll(), HttpStatus.FOUND);

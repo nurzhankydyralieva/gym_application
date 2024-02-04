@@ -23,13 +23,14 @@ public class StorageDAO {
             session.beginTransaction();
 
             Trainer trainer1 = new Trainer();
-            trainer1.setUserName("Tom.Smith");
-            trainer1.setFirstName("Tom");
-            trainer1.setLastName("Smith");
+            trainer1.setUserName("Alexandr.Pushkin");
+            trainer1.setFirstName("Alexandr");
+            trainer1.setLastName("Pushkin");
             trainer1.setIsActive(true);
             trainer1.setIsAssigned(false);
-            trainer1.setPassword("111");
+            trainer1.setPassword("SU<Vpzp>l?");
             trainer1.setCriteria("1 Trainer criteria");
+
 
             Trainer trainer2 = new Trainer();
             trainer2.setUserName("Andrea.Bocelli");
@@ -37,23 +38,23 @@ public class StorageDAO {
             trainer2.setLastName("Bocelli");
             trainer2.setIsAssigned(true);
             trainer2.setIsActive(false);
-            trainer2.setPassword("222");
+            trainer2.setPassword("5Tsb6rCqux");
             trainer2.setCriteria("2 Trainer criteria");
 
             Trainee trainee1 = new Trainee();
-            trainee1.setFirstName("Sarah");
-            trainee1.setLastName("Jons");
-            trainee1.setUserName("Sarah.Jons");
-            trainee1.setPassword("trainee");
+            trainee1.setFirstName("Sam");
+            trainee1.setLastName("Smith");
+            trainee1.setUserName("Sam.Smith");
+            trainee1.setPassword("IFHykTL376");
             trainee1.setIsAssigned(false);
             trainee1.setIsActive(true);
             trainee1.setCriteria("1 Trainee criteria");
 
             Trainee trainee2 = new Trainee();
             trainee2.setFirstName("Maxim");
-            trainee2.setLastName("Jons");
-            trainee2.setUserName("Maxim.Jons");
-            trainee2.setPassword("maxim");
+            trainee2.setLastName("Gorky");
+            trainee2.setUserName("Maxim.Gorky");
+            trainee2.setPassword("gorky");
             trainee2.setIsAssigned(false);
             trainee2.setIsActive(false);
             trainee2.setCriteria("2 Trainee criteria");
@@ -63,7 +64,7 @@ public class StorageDAO {
             trainee3.setLastName("Suleiman");
             trainee3.setUserName("Sultan.Suleiman");
             trainee3.setPassword("sultan");
-            trainee3.setIsAssigned(true);
+            trainee3.setIsAssigned(false);
             trainee3.setIsActive(true);
             trainee3.setCriteria("3 Trainee criteria");
 
@@ -93,6 +94,9 @@ public class StorageDAO {
             session.save(trainingType1);
             session.save(trainingType2);
             session.save(trainingType3);
+
+            trainer1.setSpecialization(trainingType1);
+            trainer2.setSpecialization(trainingType2);
 
             session.getTransaction().commit();
         } catch (HibernateException e) {

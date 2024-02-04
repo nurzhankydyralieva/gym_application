@@ -1,16 +1,21 @@
 package com.epam.xstack.models.dto.authentication_dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationChangeLoginRequestDTO {
-    private String userName;
-    private String oldPassword;
-    private String newPassword;
+    @NotEmpty(message = "User name should not be empty")
+    String userName;
+    @NotBlank(message = "Old password is required")
+    String oldPassword;
+    @NotBlank(message = "New password is required")
+    String newPassword;
 }

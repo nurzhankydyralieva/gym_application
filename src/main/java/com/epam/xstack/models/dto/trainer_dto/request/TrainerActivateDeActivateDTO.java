@@ -1,15 +1,19 @@
 package com.epam.xstack.models.dto.trainer_dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerActivateDeActivateDTO {
-    private String userName;
-    private Boolean isActive;
+    @NotEmpty(message = "User name should not be empty")
+    String userName;
+    @NotNull
+    Boolean isActive;
 }

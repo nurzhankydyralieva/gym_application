@@ -1,18 +1,17 @@
 package com.epam.xstack.models.dto.trainer_dto.response;
 
 import com.epam.xstack.models.entity.TrainingType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerDTO {
-    private String userName;
-    private String firstName;
-    private String lastName;
-    private TrainingType specialization;
+     String userName;
+     String firstName;
+     String lastName;
+     TrainingType specialization;
 }

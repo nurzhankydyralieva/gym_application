@@ -1,19 +1,27 @@
 package com.epam.xstack.models.dto.trainer_dto.request;
 
 import com.epam.xstack.models.entity.TrainingType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerProfileUpdateRequestDTO {
-    private String userName;
-    private String firstName;
-    private String lastName;
-    private TrainingType specialization;
-    private Boolean isActive;
+    @NotEmpty(message = "User name should not be empty")
+    String userName;
+    @NotEmpty(message = "First name should not be empty")
+    String firstName;
+    @NotEmpty(message = "Last name should not be empty")
+    String lastName;
+
+    TrainingType specialization;
+
+    Boolean isActive;
 }
