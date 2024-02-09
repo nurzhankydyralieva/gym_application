@@ -1,5 +1,6 @@
 package com.epam.xstack.dao.trainer_dao.impl;
 
+import com.epam.xstack.aspects.trainer_aspects.annotations.*;
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
 import com.epam.xstack.mapper.trainer_mapper.*;
@@ -31,6 +32,7 @@ public class TrainerDAOImpl implements TrainerDAO {
 
     @Override
     @Transactional
+    @SelectTrainerTrainingsListAspectAnnotation
     public TrainerTrainingsListResponseDTO selectTrainerTrainingsList(UUID id, TrainerTrainingsListRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainerId = session.get(Trainer.class, id);
@@ -49,6 +51,7 @@ public class TrainerDAOImpl implements TrainerDAO {
 
     @Override
     @Transactional
+    @ActivateDe_ActivateTrainerAspectAnnotation
     public TrainerOkResponseDTO activateDe_ActivateTrainer(UUID id, TrainerActivateDeActivateDTO dto) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainer = activateDeActivateTrainerMapper.toEntity(dto);
@@ -71,6 +74,7 @@ public class TrainerDAOImpl implements TrainerDAO {
 
     @Override
     @Transactional
+    @UpdateTrainerProfileAspectAnnotation
     public TrainerProfileUpdateResponseDTO updateTrainerProfile(UUID id, TrainerProfileUpdateRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainer = updateTrainerProfileRequestMapper.toEntity(requestDTO);
@@ -98,6 +102,7 @@ public class TrainerDAOImpl implements TrainerDAO {
 
     @Override
     @Transactional
+    @SelectTrainerProfileByUserNameAspectAnnotation
     public TrainerProfileSelectResponseDTO selectTrainerProfileByUserName(UUID id, TrainerProfileSelectRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainer = getTrainerProfileRequestMapper.toEntity(requestDTO);
@@ -122,6 +127,7 @@ public class TrainerDAOImpl implements TrainerDAO {
 
     @Override
     @Transactional
+    @SaveTrainerAspectAnnotation
     public TrainerRegistrationResponseDTO saveTrainer(TrainerRegistrationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainer = registrationRequestMapper.toEntity(requestDTO);

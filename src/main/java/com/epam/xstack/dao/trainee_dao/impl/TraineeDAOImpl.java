@@ -1,8 +1,6 @@
 package com.epam.xstack.dao.trainee_dao.impl;
 
-import com.epam.xstack.aspects.trainee_aspects.annotations.ActivateDe_ActivateTraineeAspectAnnotation;
-import com.epam.xstack.aspects.trainee_aspects.annotations.UpdateTraineeProfileAspectAnnotation;
-import com.epam.xstack.aspects.trainee_aspects.annotations.UpdateTraineesTrainerListAspectAnnotation;
+import com.epam.xstack.aspects.trainee_aspects.annotations.*;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
 import com.epam.xstack.mapper.trainee_mapper.*;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
@@ -31,6 +29,7 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final TraineeActivateDeActivateMapper activateDeActivateTraineeMapper;
     private final TraineeTrainingsListMapper traineeTrainingsListMapper;
     private final Generator generator;
+    private final CheckUserNameExistence checkUserNameExistence;
 
     @Override
     @Transactional
@@ -111,6 +110,7 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     @Override
     @Transactional
+    @SelectTraineeTrainingsListAspectAnnotation
     public TraineeTrainingsListResponseDTO selectTraineeTrainingsList(UUID id, TraineeTrainingsListRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee traineeId = session.get(Trainee.class, id);
@@ -128,6 +128,7 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     @Override
     @Transactional
+    @SelectTraineeProfileByUserNameAspectAnnotation
     public TraineeProfileSelectResponseDTO selectTraineeProfileByUserName(UUID id, TraineeProfileSelectRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = getTraineeProfileRequestMapper.toEntity(requestDTO);
@@ -150,10 +151,10 @@ public class TraineeDAOImpl implements TraineeDAO {
         }
     }
 
-    private final CheckUserNameExistence checkUserNameExistence;
 
     @Override
     @Transactional
+    @SaveTraineeAspectAnnotation
     public TraineeRegistrationResponseDTO saveTrainee(TraineeRegistrationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = registrationRequestMapper.toEntity(requestDTO);
@@ -177,6 +178,7 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     @Override
     @Transactional
+    @DeleteTraineeByUserNameAspectAnnotation
     public TraineeOkResponseDTO deleteTraineeByUserName(UUID id, TraineeProfileSelectRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = getTraineeProfileRequestMapper.toEntity(requestDTO);
@@ -197,6 +199,7 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     @Override
     @Transactional
+    @SelectNotAssignedOnTraineeActiveTrainersAspectAnnotation
     public TraineesTrainerActiveAndNotAssignedResponseDTO selectNotAssignedOnTraineeActiveTrainers(UUID id, TraineesTrainerActiveAndNotAssignedRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee traineeUserName = session.get(Trainee.class, id);
