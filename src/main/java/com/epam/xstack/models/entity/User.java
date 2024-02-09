@@ -32,4 +32,9 @@ public class User {
     private String criteria;
     @Column(name = "is_assigned")
     private Boolean isAssigned;
+
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 }

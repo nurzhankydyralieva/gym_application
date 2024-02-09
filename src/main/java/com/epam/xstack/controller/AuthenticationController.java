@@ -1,5 +1,6 @@
 package com.epam.xstack.controller;
 
+import com.epam.xstack.exceptions.AccessDeniedException;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationChangeLoginRequestDTO;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationRequestDTO;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationResponseDTO;
@@ -31,9 +32,17 @@ public class AuthenticationController {
             @ApiResponse(code = 404, message = "User with user name or id not found")
     })
     @ApiOperation(value = "Login the user")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AccessDeniedException.class)
     @GetMapping("/{id}")
     public ResponseEntity<AuthenticationResponseDTO> login(@PathVariable("id") UUID id, @Valid @RequestBody AuthenticationRequestDTO requestDTO) {
-        return new ResponseEntity<>(authenticationService.authenticateLogin(id, requestDTO), HttpStatus.OK);
+
+        try {
+            AuthenticationResponseDTO responseDTO = authenticationService.authenticateLogin(id, requestDTO);
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (AccessDeniedException e) {
+            throw new AccessDeniedException("Access denied, check user name or password");
+        }
     }
 
     @ApiResponses(value = {

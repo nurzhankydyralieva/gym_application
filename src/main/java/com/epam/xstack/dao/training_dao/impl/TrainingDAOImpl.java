@@ -1,5 +1,7 @@
 package com.epam.xstack.dao.training_dao.impl;
 
+
+import com.epam.xstack.aspects.training_aspects.annotations.TrainingSaveAspectAnnotation;
 import com.epam.xstack.dao.training_dao.TrainingDAO;
 import com.epam.xstack.mapper.training_mapper.TrainingMapper;
 import com.epam.xstack.models.dto.training_dto.request.TrainingSaveRequestDTO;
@@ -18,8 +20,10 @@ public class TrainingDAOImpl implements TrainingDAO {
     private final SessionFactory sessionFactory;
     private final TrainingMapper trainingMapper;
 
+
     @Override
     @Transactional
+    @TrainingSaveAspectAnnotation
     public TrainingSaveResponseDTO saveTraining(TrainingSaveRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Training training = trainingMapper.toEntity(requestDTO);

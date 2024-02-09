@@ -2,23 +2,19 @@ package com.epam.xstack.dao.trainer_dao.impl;
 
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
-import com.epam.xstack.mapper.trainee_mapper.TraineeProfileSelectRequestMapper;
 import com.epam.xstack.mapper.trainer_mapper.*;
 import com.epam.xstack.mapper.training_mapper.TrainingListMapper;
-import com.epam.xstack.models.dto.trainee_dto.request.TraineeProfileSelectRequestDTO;
-import com.epam.xstack.models.dto.trainee_dto.response.TraineeProfileSelectResponseDTO;
 import com.epam.xstack.models.dto.trainer_dto.request.*;
 import com.epam.xstack.models.dto.trainer_dto.response.*;
-import com.epam.xstack.models.entity.Trainee;
 import com.epam.xstack.models.entity.Trainer;
 import com.epam.xstack.models.enums.Code;
+import com.epam.xstack.validation.generator.Generator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
 import java.util.UUID;
 
 @Component
@@ -30,6 +26,7 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final TrainerProfileUpdateRequestMapper updateTrainerProfileRequestMapper;
     private final TrainerActivateDeActivateMapper activateDeActivateTrainerMapper;
     private final TrainerTrainingsListMapper trainerTrainingsListMapper;
+    private final Generator generator;
 
 
     @Override
@@ -79,7 +76,6 @@ public class TrainerDAOImpl implements TrainerDAO {
         Trainer trainer = updateTrainerProfileRequestMapper.toEntity(requestDTO);
         Trainer trainerToBeUpdated = session.get(Trainer.class, id);
         if (trainerToBeUpdated.getId() == id) {
-            trainerToBeUpdated.setUserName(requestDTO.getUserName());
             trainerToBeUpdated.setFirstName(requestDTO.getFirstName());
             trainerToBeUpdated.setLastName(requestDTO.getLastName());
             trainerToBeUpdated.setIsActive(requestDTO.getIsActive());
@@ -129,35 +125,21 @@ public class TrainerDAOImpl implements TrainerDAO {
     public TrainerRegistrationResponseDTO saveTrainer(TrainerRegistrationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainer = registrationRequestMapper.toEntity(requestDTO);
-        trainer.setLastName(requestDTO.getLastName());
-        trainer.setFirstName(requestDTO.getFirstName());
-        session.save(trainer);
+        String password = generator.generateRandomPassword();
+        String createdUserName = generator.generateUserName(requestDTO.getFirstName(), requestDTO.getLastName());
 
-        TrainerRegistrationRequestDTO newTrainer = registrationRequestMapper.toDto(trainer);
-        String password = generateRandomPassword(10);
-        trainer.setUserName(newTrainer.getFirstName() + "." + newTrainer.getLastName());
+        trainer.setUserName(createdUserName);
+        trainer.setFirstName(requestDTO.getFirstName());
+        trainer.setLastName(requestDTO.getLastName());
         trainer.setPassword(password);
+        trainer.setIsActive(true);
         session.save(trainer);
 
         return TrainerRegistrationResponseDTO
                 .builder()
-                .userName(newTrainer.getFirstName() + "." + newTrainer.getLastName())
+                .userName(trainer.getUserName())
                 .password(password)
                 .build();
     }
-
-
-    private static String generateRandomPassword(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?";
-        Random random = new Random();
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(characters.length());
-            password.append(characters.charAt(index));
-        }
-        return password.toString();
-    }
-
 
 }

@@ -1,7 +1,9 @@
 package com.epam.xstack.controller;
 
+import com.epam.xstack.dao.trainee_dao.impl.TraineeDAOImpl;
 import com.epam.xstack.models.dto.trainee_dto.request.*;
 import com.epam.xstack.models.dto.trainee_dto.response.*;
+import com.epam.xstack.models.entity.Trainee;
 import com.epam.xstack.service.trainee_service.TraineeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,4 +69,5 @@ public class TraineeController {
     public ResponseEntity<TraineesTrainerActiveAndNotAssignedResponseDTO> selectNotAssignedOnTraineeActiveTrainers(@PathVariable("id") UUID id, @Valid @RequestBody TraineesTrainerActiveAndNotAssignedRequestDTO userName) {
         return new ResponseEntity<>(traineeService.selectNotAssignedOnTraineeActiveTrainers(id, userName), HttpStatus.OK);
     }
+
 }

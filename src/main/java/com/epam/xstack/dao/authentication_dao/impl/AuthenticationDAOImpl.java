@@ -1,5 +1,7 @@
 package com.epam.xstack.dao.authentication_dao.impl;
 
+import com.epam.xstack.aspects.authentication_aspects.annotations.AuthenticationChangeLoginAspectAnnotation;
+import com.epam.xstack.aspects.authentication_aspects.annotations.AuthenticationLoginAspectAnnotation;
 import com.epam.xstack.dao.authentication_dao.AuthenticationDAO;
 import com.epam.xstack.mapper.authentication_mapper.AuthenticationChangeLoginRequestMapper;
 import com.epam.xstack.mapper.authentication_mapper.AuthenticationRequestMapper;
@@ -24,8 +26,10 @@ public class AuthenticationDAOImpl implements AuthenticationDAO {
     private final AuthenticationRequestMapper authenticationRequestMapper;
     private final AuthenticationChangeLoginRequestMapper requestMapper;
 
+
     @Override
     @Transactional
+    @AuthenticationLoginAspectAnnotation
     public AuthenticationResponseDTO authenticateLogin(UUID id, AuthenticationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         User user = authenticationRequestMapper.toEntity(requestDTO);
@@ -45,6 +49,7 @@ public class AuthenticationDAOImpl implements AuthenticationDAO {
 
     @Override
     @Transactional
+    @AuthenticationChangeLoginAspectAnnotation
     public AuthenticationResponseDTO authenticationChangeLogin(UUID id, AuthenticationChangeLoginRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         User userToBeUpdated = session.get(User.class, id);
