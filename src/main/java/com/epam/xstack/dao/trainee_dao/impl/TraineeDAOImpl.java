@@ -2,6 +2,7 @@ package com.epam.xstack.dao.trainee_dao.impl;
 
 import com.epam.xstack.aspects.trainee_aspects.annotations.*;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
+import com.epam.xstack.exceptions.UserAlreadyExistsException;
 import com.epam.xstack.mapper.trainee_mapper.*;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
 import com.epam.xstack.mapper.training_mapper.TraineeTrainingMapper;
@@ -155,17 +156,18 @@ public class TraineeDAOImpl implements TraineeDAO {
     @Override
     @Transactional
     @SaveTraineeAspectAnnotation
-    public TraineeRegistrationResponseDTO saveTrainee(TraineeRegistrationRequestDTO requestDTO) {
+    public TraineeRegistrationResponseDTO saveTrainee(TraineeRegistrationRequestDTO requestDTO) throws UserAlreadyExistsException {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = registrationRequestMapper.toEntity(requestDTO);
         String password = generator.generateRandomPassword();
         String createdUserName = generator.generateUserName(trainee.getFirstName(), trainee.getLastName());
 
-        checkUserNameExistence.userNameExists(createdUserName);
-
         trainee.setUserName(createdUserName);
         trainee.setPassword(password);
         trainee.setIsActive(true);
+
+        checkUserNameExistence.userNameExists(createdUserName);
+
         session.save(trainee);
 
         return TraineeRegistrationResponseDTO
