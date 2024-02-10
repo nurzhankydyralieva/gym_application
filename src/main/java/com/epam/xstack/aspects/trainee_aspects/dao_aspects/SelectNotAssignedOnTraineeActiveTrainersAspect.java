@@ -1,4 +1,4 @@
-package com.epam.xstack.aspects.trainee_aspects;
+package com.epam.xstack.aspects.trainee_aspects.dao_aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 
 public class SelectNotAssignedOnTraineeActiveTrainersAspect {
-    @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.annotations.SelectNotAssignedOnTraineeActiveTrainersAspectAnnotation)")
+    @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.SelectNotAssignedOnTraineeActiveTrainersAspectAnnotation)")
     public void notAssignedPointCut() {
     }
 

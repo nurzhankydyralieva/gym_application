@@ -1,4 +1,4 @@
-package com.epam.xstack.aspects.trainee_aspects;
+package com.epam.xstack.aspects.trainee_aspects.dao_aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ActivateDe_ActivateTraineeAspect {
-    @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.annotations.ActivateDe_ActivateTraineeAspectAnnotation)")
+    @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.ActivateDe_ActivateTraineeAspectAnnotation)")
     public void activeDe_ActiveTraineePointCut() {
     }
     @Before("activeDe_ActiveTraineePointCut()")

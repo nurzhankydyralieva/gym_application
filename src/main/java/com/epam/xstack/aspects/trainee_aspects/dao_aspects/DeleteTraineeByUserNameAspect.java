@@ -1,4 +1,4 @@
-package com.epam.xstack.aspects.trainee_aspects;
+package com.epam.xstack.aspects.trainee_aspects.dao_aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class DeleteTraineeByUserNameAspect {
-    @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.annotations.DeleteTraineeByUserNameAspectAnnotation)")
+    @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.DeleteTraineeByUserNameAspectAnnotation)")
     public void deleteTraineeByUserNamePointCut() {
     }
 

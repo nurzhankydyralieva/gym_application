@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class SaveTrainerAspect {
-    @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.annotations.SaveTrainerAspectAnnotation)")
+    @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.annotations.SaveTraineeAspectAnnotation)")
     public void saveTrainerPointCut() {
     }
 

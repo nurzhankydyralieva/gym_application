@@ -14,7 +14,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        log.info("User Already Exists Exception: {}", ex.toString());
+        log.info("User already exists  - Exception: {}", ex.toString());
+        return new ResponseEntity<>(ErrorResponse.builder().error(Error.builder()
+                .code(ex.getCodeStatus())
+                .message(ex.getMessage())
+                .build()).build(), ex.getHttpStatus());
+    }
+    @ExceptionHandler(UserNameNotCorrectException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotCorrectException(UserNameNotCorrectException ex) {
+        log.info("User name not correct -  Exception: {}", ex.toString());
         return new ResponseEntity<>(ErrorResponse.builder().error(Error.builder()
                 .code(ex.getCodeStatus())
                 .message(ex.getMessage())

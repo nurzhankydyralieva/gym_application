@@ -1,6 +1,6 @@
 package com.epam.xstack.dao.trainee_dao.impl;
 
-import com.epam.xstack.aspects.trainee_aspects.annotations.*;
+import com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.*;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
 import com.epam.xstack.exceptions.UserAlreadyExistsException;
 import com.epam.xstack.mapper.trainee_mapper.*;
@@ -10,7 +10,8 @@ import com.epam.xstack.models.dto.trainee_dto.request.*;
 import com.epam.xstack.models.dto.trainee_dto.response.*;
 import com.epam.xstack.models.entity.Trainee;
 import com.epam.xstack.models.enums.Code;
-import com.epam.xstack.validation.CheckUserNameExistence;
+import com.epam.xstack.validation.ActivationValidator;
+import com.epam.xstack.validation.UserNameExistenceValidator;
 import com.epam.xstack.validation.generator.Generator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -30,7 +31,8 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final TraineeActivateDeActivateMapper activateDeActivateTraineeMapper;
     private final TraineeTrainingsListMapper traineeTrainingsListMapper;
     private final Generator generator;
-    private final CheckUserNameExistence checkUserNameExistence;
+    private final UserNameExistenceValidator checkUserNameExistence;
+    private final ActivationValidator checkActivation;
 
     @Override
     @Transactional
@@ -40,19 +42,41 @@ public class TraineeDAOImpl implements TraineeDAO {
         Trainee trainee = activateDeActivateTraineeMapper.toEntity(dto);
         Trainee existingTrainee = session.get(Trainee.class, id);
 
-        if (existingTrainee.getUserName().equals(dto.getUserName())) {
-            existingTrainee.setIsActive(dto.getIsActive());
-            session.update(existingTrainee);
-            activateDeActivateTraineeMapper.toDto(trainee);
-            return TraineeOkResponseDTO
-                    .builder()
-                    .code(Code.STATUS_200_OK)
-                    .response("Activate DeActivate Trainee updated")
-                    .build();
-        } else {
-            throw new RuntimeException("Not available");
-        }
+        checkActivation.checkActiveOrNotActive(id, dto);
+
+        existingTrainee.setIsActive(dto.getIsActive());
+        session.update(existingTrainee);
+        activateDeActivateTraineeMapper.toDto(trainee);
+        return TraineeOkResponseDTO
+                .builder()
+                .code(Code.STATUS_200_OK)
+                .response("Activate DeActivate Trainee updated")
+                .build();
+
     }
+
+
+//    @Override
+//    @Transactional
+//    @ActivateDe_ActivateTraineeAspectAnnotation
+//    public TraineeOkResponseDTO activateDe_ActivateTrainee(UUID id, TraineeActivateDeActivateDTO dto) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Trainee trainee = activateDeActivateTraineeMapper.toEntity(dto);
+//        Trainee existingTrainee = session.get(Trainee.class, id);
+//
+//        if (existingTrainee.getUserName().equals(dto.getUserName())) {
+//            existingTrainee.setIsActive(dto.getIsActive());
+//            session.update(existingTrainee);
+//            activateDeActivateTraineeMapper.toDto(trainee);
+//            return TraineeOkResponseDTO
+//                    .builder()
+//                    .code(Code.STATUS_200_OK)
+//                    .response("Activate DeActivate Trainee updated")
+//                    .build();
+//        } else {
+//            throw new RuntimeException("Not available");
+//        }
+//    }
 
     private final TraineesTrainerListUpdateMapper traineesTrainerListUpdateMapper;
 

@@ -1,4 +1,4 @@
-package com.epam.xstack.aspects.trainee_aspects.annotations;
+package com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SelectTraineeTrainingsListAspectAnnotation {
+public @interface ActivateDe_ActivateTraineeAspectAnnotation {
 }

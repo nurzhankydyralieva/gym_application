@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CheckUserNameExistence {
+public class UserNameExistenceValidator {
     private final SessionFactory sessionFactory;
 
     public void userNameExists(String userName) {
@@ -26,7 +26,7 @@ public class CheckUserNameExistence {
 
             throw UserAlreadyExistsException.builder()
                     .codeStatus(Code.USER_NAME_EXISTS)
-                    .message("The user name already exists in database")
+                    .message("User with name - " + userNameInDb.getUserName() + " already exists in database")
                     .httpStatus(HttpStatus.CONFLICT)
                     .build();
         }

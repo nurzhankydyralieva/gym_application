@@ -9,7 +9,7 @@ import com.epam.xstack.models.dto.trainer_dto.request.*;
 import com.epam.xstack.models.dto.trainer_dto.response.*;
 import com.epam.xstack.models.entity.Trainer;
 import com.epam.xstack.models.enums.Code;
-import com.epam.xstack.validation.CheckUserNameExistence;
+import com.epam.xstack.validation.UserNameExistenceValidator;
 import com.epam.xstack.validation.generator.Generator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -29,7 +29,7 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final TrainerActivateDeActivateMapper activateDeActivateTrainerMapper;
     private final TrainerTrainingsListMapper trainerTrainingsListMapper;
     private final Generator generator;
-    private final CheckUserNameExistence checkUserNameExistence;
+    private final UserNameExistenceValidator checkUserNameExistence;
 
 
     @Override
@@ -129,7 +129,7 @@ public class TrainerDAOImpl implements TrainerDAO {
 
     @Override
     @Transactional
-    @SaveTrainerAspectAnnotation
+    @SaveTraineeAspectAnnotation
     public TrainerRegistrationResponseDTO saveTrainer(TrainerRegistrationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainer trainer = registrationRequestMapper.toEntity(requestDTO);
