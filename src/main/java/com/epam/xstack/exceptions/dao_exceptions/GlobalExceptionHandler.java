@@ -1,4 +1,4 @@
-package com.epam.xstack.exceptions;
+package com.epam.xstack.exceptions.dao_exceptions;
 
 import com.epam.xstack.exceptions.error_models.Error;
 import com.epam.xstack.exceptions.error_models.ErrorResponse;
@@ -28,4 +28,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(ex.getMessage())
                 .build()).build(), ex.getHttpStatus());
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.epam.xstack.validation;
 
-import com.epam.xstack.exceptions.UserAlreadyExistsException;
+import com.epam.xstack.exceptions.dao_exceptions.UserAlreadyExistsException;
 import com.epam.xstack.models.entity.User;
 import com.epam.xstack.models.enums.Code;
 import lombok.RequiredArgsConstructor;

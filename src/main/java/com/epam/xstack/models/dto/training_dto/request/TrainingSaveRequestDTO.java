@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -18,7 +19,7 @@ public class TrainingSaveRequestDTO {
     Trainee traineeUserName;
     @NotBlank(message = "Trainer user name should not be empty")
     Trainer trainerUserName;
-    @NotBlank(message = "Training name should not be empty")
+    @NotNull(message = "Training name should not be empty")
     String trainingName;
 
     Date trainingDate;

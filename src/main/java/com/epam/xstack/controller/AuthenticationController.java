@@ -1,6 +1,6 @@
 package com.epam.xstack.controller;
 
-import com.epam.xstack.exceptions.AccessDeniedException;
+import com.epam.xstack.exceptions.controller_exceptions.AccessDeniedException;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationChangeLoginRequestDTO;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationRequestDTO;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationResponseDTO;

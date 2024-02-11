@@ -1,6 +1,6 @@
 package com.epam.xstack.validation;
 
-import com.epam.xstack.exceptions.UserNameNotCorrectException;
+import com.epam.xstack.exceptions.dao_exceptions.UserNameNotCorrectException;
 import com.epam.xstack.models.dto.trainee_dto.request.TraineeActivateDeActivateDTO;
 import com.epam.xstack.models.entity.Trainee;
 import com.epam.xstack.models.enums.Code;

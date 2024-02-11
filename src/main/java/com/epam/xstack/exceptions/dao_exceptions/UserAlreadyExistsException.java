@@ -1,4 +1,5 @@
-package com.epam.xstack.exceptions;
+package com.epam.xstack.exceptions.dao_exceptions;
+
 
 import com.epam.xstack.models.enums.Code;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,8 +10,10 @@ import org.springframework.http.HttpStatus;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserNameNotCorrectException extends RuntimeException {
+public class UserAlreadyExistsException extends RuntimeException {
+
     private final Code codeStatus;
     private final String message;
     private final HttpStatus httpStatus;
+
 }

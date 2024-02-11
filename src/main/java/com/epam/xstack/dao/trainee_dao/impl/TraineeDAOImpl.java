@@ -2,7 +2,7 @@ package com.epam.xstack.dao.trainee_dao.impl;
 
 import com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.*;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
-import com.epam.xstack.exceptions.UserAlreadyExistsException;
+import com.epam.xstack.exceptions.dao_exceptions.UserAlreadyExistsException;
 import com.epam.xstack.mapper.trainee_mapper.*;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
 import com.epam.xstack.mapper.training_mapper.TraineeTrainingMapper;
@@ -33,6 +33,7 @@ public class TraineeDAOImpl implements TraineeDAO {
     private final Generator generator;
     private final UserNameExistenceValidator checkUserNameExistence;
     private final ActivationValidator checkActivation;
+    private final TraineesTrainerListUpdateMapper traineesTrainerListUpdateMapper;
 
     @Override
     @Transactional
@@ -54,31 +55,6 @@ public class TraineeDAOImpl implements TraineeDAO {
                 .build();
 
     }
-
-
-//    @Override
-//    @Transactional
-//    @ActivateDe_ActivateTraineeAspectAnnotation
-//    public TraineeOkResponseDTO activateDe_ActivateTrainee(UUID id, TraineeActivateDeActivateDTO dto) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Trainee trainee = activateDeActivateTraineeMapper.toEntity(dto);
-//        Trainee existingTrainee = session.get(Trainee.class, id);
-//
-//        if (existingTrainee.getUserName().equals(dto.getUserName())) {
-//            existingTrainee.setIsActive(dto.getIsActive());
-//            session.update(existingTrainee);
-//            activateDeActivateTraineeMapper.toDto(trainee);
-//            return TraineeOkResponseDTO
-//                    .builder()
-//                    .code(Code.STATUS_200_OK)
-//                    .response("Activate DeActivate Trainee updated")
-//                    .build();
-//        } else {
-//            throw new RuntimeException("Not available");
-//        }
-//    }
-
-    private final TraineesTrainerListUpdateMapper traineesTrainerListUpdateMapper;
 
     //TODO update method is not working
     @Override
@@ -103,6 +79,7 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     }
 
+
     @Override
     @Transactional
     @UpdateTraineeProfileAspectAnnotation
@@ -110,16 +87,17 @@ public class TraineeDAOImpl implements TraineeDAO {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = updateTraineeProfileRequestMapper.toEntity(requestDTO);
         Trainee traineeToBeUpdated = session.get(Trainee.class, id);
-        if (traineeToBeUpdated.getId() == id) {
-            traineeToBeUpdated.setFirstName(trainee.getFirstName());
-            traineeToBeUpdated.setLastName(trainee.getLastName());
-            traineeToBeUpdated.setDateOfBirth(trainee.getDateOfBirth());
-            traineeToBeUpdated.setAddress(trainee.getAddress());
-            traineeToBeUpdated.setIsActive(trainee.getIsActive());
 
-            session.update(traineeToBeUpdated);
-            updateTraineeProfileRequestMapper.toDto(trainee);
-        }
+        if (traineeToBeUpdated.getId() == id) {
+        traineeToBeUpdated.setFirstName(trainee.getFirstName());
+        traineeToBeUpdated.setLastName(trainee.getLastName());
+        traineeToBeUpdated.setDateOfBirth(trainee.getDateOfBirth());
+        traineeToBeUpdated.setAddress(trainee.getAddress());
+        traineeToBeUpdated.setIsActive(trainee.getIsActive());
+
+        session.update(traineeToBeUpdated);
+        updateTraineeProfileRequestMapper.toDto(trainee);
+          }
 
         return TraineeProfileUpdateResponseDTO
                 .builder()
@@ -185,7 +163,6 @@ public class TraineeDAOImpl implements TraineeDAO {
         Trainee trainee = registrationRequestMapper.toEntity(requestDTO);
         String password = generator.generateRandomPassword();
         String createdUserName = generator.generateUserName(trainee.getFirstName(), trainee.getLastName());
-
         trainee.setUserName(createdUserName);
         trainee.setPassword(password);
         trainee.setIsActive(true);
@@ -193,7 +170,6 @@ public class TraineeDAOImpl implements TraineeDAO {
         checkUserNameExistence.userNameExists(createdUserName);
 
         session.save(trainee);
-
         return TraineeRegistrationResponseDTO
                 .builder()
                 .userName(trainee.getUserName())
