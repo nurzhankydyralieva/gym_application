@@ -1,5 +1,6 @@
 package com.epam.xstack.controller;
 
+import com.epam.xstack.aspects.training_aspects.annotations.SaveTrainingEndPointAspectAnnotation;
 import com.epam.xstack.models.dto.training_dto.request.TrainingSaveRequestDTO;
 import com.epam.xstack.models.dto.training_dto.response.TrainingSaveResponseDTO;
 import com.epam.xstack.service.training_service.TrainingService;
@@ -24,6 +25,7 @@ public class TrainingController {
     private final NotNullValidation validation;
 
     @ApiOperation(value = "Save Training to database")
+    @SaveTrainingEndPointAspectAnnotation
     @PostMapping("/save")
     public ResponseEntity<TrainingSaveResponseDTO> saveTraining(@RequestBody TrainingSaveRequestDTO requestDTO, BindingResult result) {
         validation.nullValidation(result);

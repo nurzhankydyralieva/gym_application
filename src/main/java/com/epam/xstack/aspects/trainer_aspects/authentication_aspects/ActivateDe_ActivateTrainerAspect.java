@@ -1,4 +1,4 @@
-package com.epam.xstack.aspects.trainer_aspects;
+package com.epam.xstack.aspects.trainer_aspects.authentication_aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ActivateDe_ActivateTrainerAspect {
-    @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.annotations.ActivateDe_ActivateTrainerAspectAnnotation)")
+    @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.authentication_aspects.annotations.ActivateDe_ActivateTrainerAspectAnnotation)")
     public void activeDe_ActiveTrainerPointCut() {
     }
     @Before("activeDe_ActiveTrainerPointCut()")

@@ -1,6 +1,6 @@
 package com.epam.xstack.controller;
 
-import com.epam.xstack.aspects.trainee_aspects.end_points_aspects.annotations.SaveTraineeEndPointAspectAnnotation;
+import com.epam.xstack.aspects.trainee_aspects.end_points_aspects.annotations.*;
 import com.epam.xstack.models.dto.trainee_dto.request.*;
 import com.epam.xstack.models.dto.trainee_dto.response.*;
 import com.epam.xstack.service.trainee_service.TraineeService;
@@ -34,6 +34,7 @@ public class TraineeController {
 
 
     @ApiOperation(value = "Get Trainee by user name")
+    @SelectTraineeProfileAspectAnnotation
     @GetMapping("/{id}")
     public ResponseEntity<TraineeProfileSelectResponseDTO> selectTraineeProfile(@PathVariable("id") UUID id, @Valid @RequestBody TraineeProfileSelectRequestDTO requestDTO, BindingResult result) {
         validation.userNotNullValidation(result);
@@ -41,6 +42,7 @@ public class TraineeController {
     }
 
     @ApiOperation(value = "Update Trainee in database")
+    @UpdateTraineeEndPointAspectAnnotation
     @PutMapping("/update/{id}")
     public ResponseEntity<TraineeProfileUpdateResponseDTO> updateUser(@PathVariable("id") UUID id, @Valid @RequestBody TraineeProfileUpdateRequestDTO requestDTO, BindingResult result) {
         validation.nullValidation(result);
@@ -48,6 +50,7 @@ public class TraineeController {
     }
 
     @ApiOperation(value = "Update Trainee's Trainer List in database")
+    @UpdateTTListEndPointAspectAnnotation
     @PutMapping("/update-list/{id}")
     public ResponseEntity<TraineesTrainerListUpdateResponseDTO> updateTraineesTrainerList(@PathVariable("id") UUID id, @Valid @RequestBody TraineesTrainerListUpdateRequestDTO requestDTO, BindingResult result) {
         validation.nullValidation(result);
@@ -55,13 +58,15 @@ public class TraineeController {
     }
 
     @ApiOperation(value = "Update active or de active Trainee")
+    @ActiveDeActiveTraineeEndPointAspectAnnotation
     @PatchMapping("/{id}")
-    public ResponseEntity<TraineeOkResponseDTO> updateActivateDe_ActivateTrainer(@PathVariable("id") UUID id, @Valid @RequestBody TraineeActivateDeActivateDTO dto, BindingResult result) {
+    public ResponseEntity<TraineeOkResponseDTO> updateActivateDe_ActivateTrainee(@PathVariable("id") UUID id, @Valid @RequestBody TraineeActivateDeActivateDTO dto, BindingResult result) {
         validation.userNotNullValidation(result);
         return new ResponseEntity<>(traineeService.activateDe_ActivateTrainee(id, dto), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete Trainee by user name")
+    @DeleteEndPointAspectAnnotation
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<TraineeOkResponseDTO> deleteTraineeByUserName(@PathVariable("id") UUID id, @Valid @RequestBody TraineeProfileSelectRequestDTO requestDTO, BindingResult result) {
         validation.userNotNullValidation(result);
@@ -69,13 +74,15 @@ public class TraineeController {
     }
 
     @ApiOperation(value = "Get Trainee Trainings List")
+    @SelectTraineeTLEndPointAspectAnnotation
     @GetMapping("/select/{id}")
-    public ResponseEntity<TraineeTrainingsListResponseDTO> select(@PathVariable("id") UUID id, @Valid @RequestBody TraineeTrainingsListRequestDTO requestDTO, BindingResult result) {
+    public ResponseEntity<TraineeTrainingsListResponseDTO> selectTraineeTrainingsList(@PathVariable("id") UUID id, @Valid @RequestBody TraineeTrainingsListRequestDTO requestDTO, BindingResult result) {
         validation.userNotNullValidation(result);
         return new ResponseEntity<>(traineeService.selectTraineeTrainingsList(id, requestDTO), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get not assigned on trainee active trainers.")
+    @NotAssignedTraineeEndPointAspectAnnotation
     @GetMapping("/active-not-assigned/{id}")
     public ResponseEntity<TraineesTrainerActiveAndNotAssignedResponseDTO> selectNotAssignedOnTraineeActiveTrainers(@PathVariable("id") UUID id, @Valid @RequestBody TraineesTrainerActiveAndNotAssignedRequestDTO userName, BindingResult result) {
         validation.userNotNullValidation(result);

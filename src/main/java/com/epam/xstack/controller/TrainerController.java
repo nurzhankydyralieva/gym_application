@@ -1,5 +1,6 @@
 package com.epam.xstack.controller;
 
+import com.epam.xstack.aspects.trainer_aspects.end_points_aspects.annotations.*;
 import com.epam.xstack.models.dto.trainer_dto.request.*;
 import com.epam.xstack.models.dto.trainer_dto.response.*;
 import com.epam.xstack.service.trainer_service.TrainerService;
@@ -24,6 +25,7 @@ public class TrainerController {
     private final NotNullValidation validation;
 
     @ApiOperation(value = "Save Trainer to database")
+    @SaveTrainerEndPointAspectAnnotation
     @PostMapping("/save")
     public ResponseEntity<TrainerRegistrationResponseDTO> saveTrainee(@Valid @RequestBody TrainerRegistrationRequestDTO requestDTO, BindingResult result) {
         validation.nullValidation(result);
@@ -31,6 +33,7 @@ public class TrainerController {
     }
 
     @ApiOperation(value = "Get Trainer by user name")
+    @SelectTrainerProfileAspectAnnotation
     @GetMapping("/{id}")
     public ResponseEntity<TrainerProfileSelectResponseDTO> selectTrainerProfile(@PathVariable("id") UUID id, @Valid @RequestBody TrainerProfileSelectRequestDTO requestDTO, BindingResult result) {
         validation.userNotNullValidation(result);
@@ -39,6 +42,7 @@ public class TrainerController {
 
 
     @ApiOperation(value = "Update Trainer in database")
+    @UpdateTrainerEndPointAspectAnnotation
     @PutMapping("/update/{id}")
     public ResponseEntity<TrainerProfileUpdateResponseDTO> updateUser(@PathVariable("id") UUID id, @Valid @RequestBody TrainerProfileUpdateRequestDTO requestDTO, BindingResult result) {
         validation.nullValidation(result);
@@ -46,6 +50,7 @@ public class TrainerController {
     }
 
     @ApiOperation(value = "Update active or de active Trainer")
+    @ActiveDeActiveTrainerEndPointAspectAnnotation
     @PatchMapping("/{id}")
     public ResponseEntity<TrainerOkResponseDTO> updateActivateDe_ActivateTrainer(@PathVariable("id") UUID id, @Valid @RequestBody TrainerActivateDeActivateDTO dto, BindingResult result) {
         validation.nullValidation(result);
@@ -53,8 +58,9 @@ public class TrainerController {
     }
 
     @ApiOperation(value = "Get Trainer Trainings List")
+    @SelectTrainerTLEndPointAspectAnnotation
     @GetMapping("/select/{id}")
-    public ResponseEntity<TrainerTrainingsListResponseDTO> select(@PathVariable("id") UUID id, @Valid @RequestBody TrainerTrainingsListRequestDTO requestDTO, BindingResult result) {
+    public ResponseEntity<TrainerTrainingsListResponseDTO> selectTrainerTrainingsList(@PathVariable("id") UUID id, @Valid @RequestBody TrainerTrainingsListRequestDTO requestDTO, BindingResult result) {
         validation.userNotNullValidation(result);
         return new ResponseEntity<>(trainerService.selectTrainerTrainingsList(id, requestDTO), HttpStatus.OK);
     }

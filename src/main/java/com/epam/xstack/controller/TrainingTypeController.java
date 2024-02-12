@@ -1,5 +1,7 @@
 package com.epam.xstack.controller;
 
+import com.epam.xstack.aspects.training_type.annotations.SaveTrainingTypeEndPointAspectAnnotation;
+import com.epam.xstack.aspects.training_type.annotations.SelectAllTrainingTypeEndPointAspectAnnotation;
 import com.epam.xstack.models.dto.training_type_dto.TrainingTypeDTO;
 import com.epam.xstack.service.training_type_service.TrainingTypeService;
 import com.epam.xstack.validation.NotNullValidation;
@@ -23,6 +25,7 @@ public class TrainingTypeController {
     private final NotNullValidation validation;
 
     @ApiOperation(value = "Save Training Type to database")
+    @SaveTrainingTypeEndPointAspectAnnotation
     @PostMapping("/save")
     public ResponseEntity<TrainingTypeDTO> save(@Valid @RequestBody TrainingTypeDTO trainingTypeDTO, BindingResult result) {
         validation.nullValidation(result);
@@ -30,6 +33,7 @@ public class TrainingTypeController {
     }
 
     @ApiOperation(value = "Get all Trainings")
+    @SelectAllTrainingTypeEndPointAspectAnnotation
     @GetMapping("/all")
     public ResponseEntity<List<TrainingTypeDTO>> findAll() {
         return new ResponseEntity<>(trainingTypeService.findAll(), HttpStatus.FOUND);

@@ -1,6 +1,6 @@
 package com.epam.xstack.dao.trainer_dao.impl;
 
-import com.epam.xstack.aspects.trainer_aspects.annotations.*;
+import com.epam.xstack.aspects.trainer_aspects.authentication_aspects.annotations.*;
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
 import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
 import com.epam.xstack.mapper.trainer_mapper.*;
