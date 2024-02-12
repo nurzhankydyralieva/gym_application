@@ -10,6 +10,7 @@ import com.epam.xstack.models.dto.authentication_dto.AuthenticationRequestDTO;
 import com.epam.xstack.models.dto.authentication_dto.AuthenticationResponseDTO;
 import com.epam.xstack.models.entity.User;
 import com.epam.xstack.models.enums.Code;
+import com.epam.xstack.validation.AuthValidation;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,27 +26,42 @@ public class AuthenticationDAOImpl implements AuthenticationDAO {
     private final SessionFactory sessionFactory;
     private final AuthenticationRequestMapper authenticationRequestMapper;
     private final AuthenticationChangeLoginRequestMapper requestMapper;
-
+    private final AuthValidation validation;
 
     @Override
     @Transactional
     @AuthenticationLoginAspectAnnotation
     public AuthenticationResponseDTO authenticateLogin(UUID id, AuthenticationRequestDTO requestDTO) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = authenticationRequestMapper.toEntity(requestDTO);
-        User userId = session.get(User.class, id);
 
-        if (userId.getUserName().equals(user.getUserName()) && userId.getPassword().equals(user.getPassword())) {
-            authenticationRequestMapper.toDto(user);
-            return AuthenticationResponseDTO
-                    .builder()
-                    .response("Login response")
-                    .code(Code.STATUS_200_OK)
-                    .build();
-        } else {
-            throw new RuntimeException("Not available");
-        }
+        validation.authValidator(id, requestDTO);
+
+        return AuthenticationResponseDTO
+                .builder()
+                .response("Login response")
+                .code(Code.STATUS_200_OK)
+                .build();
     }
+
+
+//    @Override
+//    @Transactional
+//    @AuthenticationLoginAspectAnnotation
+//    public AuthenticationResponseDTO authenticateLogin(UUID id, AuthenticationRequestDTO requestDTO) {
+//        Session session = sessionFactory.getCurrentSession();
+//        User user = authenticationRequestMapper.toEntity(requestDTO);
+//        User userId = session.get(User.class, id);
+//
+//        if (userId.getUserName().equals(user.getUserName()) && userId.getPassword().equals(user.getPassword())) {
+//            authenticationRequestMapper.toDto(user);
+//            return AuthenticationResponseDTO
+//                    .builder()
+//                    .response("Login response")
+//                    .code(Code.STATUS_200_OK)
+//                    .build();
+//        } else {
+//            throw new RuntimeException("Not available");
+//        }
+//    }
 
     @Override
     @Transactional

@@ -20,14 +20,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(ex.getMessage())
                 .build()).build(), ex.getHttpStatus());
     }
-    @ExceptionHandler(UserNameNotCorrectException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotCorrectException(UserNameNotCorrectException ex) {
-        log.info("User name not correct -  Exception: {}", ex.toString());
+    @ExceptionHandler(UserNameOrPasswordNotCorrectException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotCorrectException(UserNameOrPasswordNotCorrectException ex) {
+        log.info("User name or password not correct -  Exception: {}", ex.toString());
         return new ResponseEntity<>(ErrorResponse.builder().error(Error.builder()
                 .code(ex.getCodeStatus())
                 .message(ex.getMessage())
                 .build()).build(), ex.getHttpStatus());
     }
-
 
 }
