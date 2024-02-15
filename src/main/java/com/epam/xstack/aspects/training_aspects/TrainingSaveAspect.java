@@ -15,6 +15,7 @@ public class TrainingSaveAspect {
     @Pointcut("@annotation(com.epam.xstack.aspects.training_aspects.annotations.TrainingSaveAspectAnnotation)")
     public void saveTrainingPointCut() {
     }
+
     @Before("saveTrainingPointCut()")
     public void beforeAdvice(JoinPoint joinPoint) {
         log.info("Before save training method invoked: " + joinPoint.getSignature());
@@ -24,9 +25,11 @@ public class TrainingSaveAspect {
     public void afterAdvice(JoinPoint joinPoint) {
         log.info("After save training method invoked: " + joinPoint.getSignature());
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.training_aspects.annotations.SaveTrainingEndPointAspectAnnotation)")
     public void saveTrainingEndPointPointCut() {
     }
+
     @Before("saveTrainingEndPointPointCut()")
     public void beforeEndPointAdvice() {
         log.info("Before save training end point invoked");

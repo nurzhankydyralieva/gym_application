@@ -18,7 +18,6 @@ public class StorageDAO {
 
     @PostConstruct
     public void init() {
-
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
@@ -30,7 +29,6 @@ public class StorageDAO {
             trainer1.setIsAssigned(false);
             trainer1.setPassword("SU<Vpzp>l?");
             trainer1.setCriteria("1 Trainer criteria");
-
 
             Trainer trainer2 = new Trainer();
             trainer2.setUserName("Andrea.Bocelli");

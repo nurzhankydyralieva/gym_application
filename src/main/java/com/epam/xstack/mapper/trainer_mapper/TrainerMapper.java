@@ -10,6 +10,7 @@ import java.util.Collection;
 @Mapper(componentModel = "spring")
 public interface TrainerMapper {
     TrainerMapper INSTANCE = Mappers.getMapper(TrainerMapper.class);
+
     TrainerDTO toDto(Trainer trainer);
 
     Trainer toEntity(TrainerDTO requestDTO);

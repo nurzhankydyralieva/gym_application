@@ -12,5 +12,5 @@ import javax.validation.constraints.NotEmpty;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerProfileSelectRequestDTO {
     @NotEmpty(message = "User name should not be empty")
-     String userName;
+    String userName;
 }

@@ -11,8 +11,8 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationRequestDTO {
-     @NotEmpty(message = "User name should not be empty")
-     String userName;
-     @NotEmpty(message = "Password should not be empty")
-     String password;
+    @NotEmpty(message = "User name should not be empty")
+    String userName;
+    @NotEmpty(message = "Password should not be empty")
+    String password;
 }

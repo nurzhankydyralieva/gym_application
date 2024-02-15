@@ -25,6 +25,7 @@ public class SaveTrainingTypeAspect {
     public void afterAdvice(JoinPoint joinPoint) {
         log.info("After save Training type method invoked: " + joinPoint.getSignature());
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.training_type.annotations.SelectAllTrainingTypeAspectAnnotation)")
     public void selectAllTrainingTypePointCut() {
     }

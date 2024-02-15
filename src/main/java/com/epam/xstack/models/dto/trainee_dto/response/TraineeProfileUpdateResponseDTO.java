@@ -13,11 +13,11 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TraineeProfileUpdateResponseDTO {
-     String userName;
-     String firstName;
-     String lastName;
-     Date dateOfBirth;
-     String address;
-     Boolean isActive;
-     Collection<TrainerDTO> trainers;
+    String userName;
+    String firstName;
+    String lastName;
+    Date dateOfBirth;
+    String address;
+    Boolean isActive;
+    Collection<TrainerDTO> trainers;
 }

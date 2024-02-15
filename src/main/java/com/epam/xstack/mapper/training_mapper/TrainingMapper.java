@@ -20,6 +20,5 @@ public interface TrainingMapper {
     List<TrainingSaveRequestDTO> toDtos(List<Training> trainings);
 
     List<Training> toEntities(List<TrainingSaveRequestDTO> requestDTOS);
-
 }
 

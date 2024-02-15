@@ -7,8 +7,12 @@ import java.util.UUID;
 
 public interface TrainerService {
     TrainerRegistrationResponseDTO saveTrainer(TrainerRegistrationRequestDTO requestDTO);
+
     TrainerProfileSelectResponseDTO selectTrainerProfileByUserName(UUID id, TrainerProfileSelectRequestDTO requestDTO);
+
     TrainerProfileUpdateResponseDTO updateTrainerProfile(UUID id, TrainerProfileUpdateRequestDTO requestDTO);
+
     TrainerOkResponseDTO activateDe_ActivateTrainer(UUID id, TrainerActivateDeActivateDTO dto);
+
     TrainerTrainingsListResponseDTO selectTrainerTrainingsList(UUID id, TrainerTrainingsListRequestDTO requestDTO);
 }

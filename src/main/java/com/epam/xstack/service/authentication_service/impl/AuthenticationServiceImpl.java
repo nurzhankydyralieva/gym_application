@@ -20,9 +20,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationResponseDTO authenticateLogin(UUID id, AuthenticationRequestDTO requestDTO) {
         return authenticationDAO.authenticateLogin(id, requestDTO);
     }
+
     @Override
     public AuthenticationResponseDTO authenticationChangeLogin(UUID id, AuthenticationChangeLoginRequestDTO requestDTO) {
-        return   authenticationDAO.authenticationChangeLogin(id,requestDTO);
+        return authenticationDAO.authenticationChangeLogin(id, requestDTO);
     }
-
 }

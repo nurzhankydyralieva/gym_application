@@ -13,10 +13,10 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TraineeProfileSelectResponseDTO {
-     String firstName;
-     String lastName;
-     Date dateOfBirth;
-     String address;
-     Boolean isActive;
-     Collection<TrainerDTO> trainers;
+    String firstName;
+    String lastName;
+    Date dateOfBirth;
+    String address;
+    Boolean isActive;
+    Collection<TrainerDTO> trainers;
 }

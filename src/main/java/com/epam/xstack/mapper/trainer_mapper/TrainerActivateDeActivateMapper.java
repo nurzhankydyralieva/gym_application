@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 
 public interface TrainerActivateDeActivateMapper {
     TrainerActivateDeActivateDTO toDto(Trainer trainer);
+
     Trainer toEntity(TrainerActivateDeActivateDTO dto);
 }

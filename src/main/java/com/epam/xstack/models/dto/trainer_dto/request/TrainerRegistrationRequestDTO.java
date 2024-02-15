@@ -4,7 +4,6 @@ import com.epam.xstack.models.entity.TrainingType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Data
@@ -17,7 +16,5 @@ public class TrainerRegistrationRequestDTO {
     String firstName;
     @NotEmpty(message = "Last name should not be empty")
     String lastName;
-
     TrainingType specialization;
-
 }

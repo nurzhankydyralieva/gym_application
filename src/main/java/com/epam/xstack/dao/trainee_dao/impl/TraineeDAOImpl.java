@@ -2,7 +2,8 @@ package com.epam.xstack.dao.trainee_dao.impl;
 
 import com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.*;
 import com.epam.xstack.dao.trainee_dao.TraineeDAO;
-import com.epam.xstack.exceptions.dao_exceptions.UserAlreadyExistsException;
+import com.epam.xstack.exceptions.dao_exceptions.UserIdNotFoundException;
+import com.epam.xstack.exceptions.dao_exceptions.UserNameNotExistsException;
 import com.epam.xstack.mapper.trainee_mapper.*;
 import com.epam.xstack.mapper.trainer_mapper.TrainerMapper;
 import com.epam.xstack.mapper.training_mapper.TraineeTrainingMapper;
@@ -16,6 +17,7 @@ import com.epam.xstack.validation.generator.Generator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +45,7 @@ public class TraineeDAOImpl implements TraineeDAO {
         Trainee trainee = activateDeActivateTraineeMapper.toEntity(dto);
         Trainee existingTrainee = session.get(Trainee.class, id);
 
-        checkActivation.checkActiveOrNotActive(id, dto);
+        checkActivation.checkActiveOrNotTraineeActive(id, dto);
 
         existingTrainee.setIsActive(dto.getIsActive());
         session.update(existingTrainee);
@@ -79,7 +81,6 @@ public class TraineeDAOImpl implements TraineeDAO {
 
     }
 
-
     @Override
     @Transactional
     @UpdateTraineeProfileAspectAnnotation
@@ -89,15 +90,15 @@ public class TraineeDAOImpl implements TraineeDAO {
         Trainee traineeToBeUpdated = session.get(Trainee.class, id);
 
         if (traineeToBeUpdated.getId() == id) {
-        traineeToBeUpdated.setFirstName(trainee.getFirstName());
-        traineeToBeUpdated.setLastName(trainee.getLastName());
-        traineeToBeUpdated.setDateOfBirth(trainee.getDateOfBirth());
-        traineeToBeUpdated.setAddress(trainee.getAddress());
-        traineeToBeUpdated.setIsActive(trainee.getIsActive());
+            traineeToBeUpdated.setFirstName(trainee.getFirstName());
+            traineeToBeUpdated.setLastName(trainee.getLastName());
+            traineeToBeUpdated.setDateOfBirth(trainee.getDateOfBirth());
+            traineeToBeUpdated.setAddress(trainee.getAddress());
+            traineeToBeUpdated.setIsActive(trainee.getIsActive());
 
-        session.update(traineeToBeUpdated);
-        updateTraineeProfileRequestMapper.toDto(trainee);
-          }
+            session.update(traineeToBeUpdated);
+            updateTraineeProfileRequestMapper.toDto(trainee);
+        }
 
         return TraineeProfileUpdateResponseDTO
                 .builder()
@@ -118,14 +119,19 @@ public class TraineeDAOImpl implements TraineeDAO {
         Session session = sessionFactory.getCurrentSession();
         Trainee traineeId = session.get(Trainee.class, id);
         Trainee trainee = traineeTrainingsListMapper.toEntity(requestDTO);
-        if (traineeId.getUserName().equals(trainee.getUserName())) {
+
+        if (traineeId != null && traineeId.getUserName().equals(requestDTO.getUserName())) {
             traineeTrainingsListMapper.toDto(trainee);
             return TraineeTrainingsListResponseDTO
                     .builder()
                     .trainings(TraineeTrainingMapper.INSTANCE.toDtos(traineeId.getTrainings()))
                     .build();
         } else {
-            throw new RuntimeException("Not exists");
+            throw UserIdNotFoundException.builder()
+                    .codeStatus(Code.USER_ID_NOT_FOUND)
+                    .message("User id:  " + traineeId.getId() + " or user name: " + requestDTO.getUserName() + " not correct.")
+                    .httpStatus(HttpStatus.CONFLICT)
+                    .build();
         }
     }
 
@@ -137,7 +143,7 @@ public class TraineeDAOImpl implements TraineeDAO {
         Trainee trainee = getTraineeProfileRequestMapper.toEntity(requestDTO);
         Trainee traineeId = session.get(Trainee.class, id);
 
-        if (traineeId.getUserName().equals(trainee.getUserName())) {
+        if (traineeId.getUserName().equals(requestDTO.getUserName())) {
             getTraineeProfileRequestMapper.toDto(trainee);
 
             return TraineeProfileSelectResponseDTO
@@ -150,20 +156,25 @@ public class TraineeDAOImpl implements TraineeDAO {
                     .trainers(TrainerMapper.INSTANCE.toDtos(traineeId.getTrainers()))
                     .build();
         } else {
-            throw new RuntimeException("Not available");
+            throw UserNameNotExistsException.builder()
+                    .codeStatus(Code.USER_NOT_FOUND)
+                    .message("User with name - " + requestDTO.getUserName() + " not exists in database")
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .build();
         }
     }
-
 
     @Override
     @Transactional
     @SaveTraineeAspectAnnotation
-    public TraineeRegistrationResponseDTO saveTrainee(TraineeRegistrationRequestDTO requestDTO) throws UserAlreadyExistsException {
+    public TraineeRegistrationResponseDTO saveTrainee(TraineeRegistrationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         Trainee trainee = registrationRequestMapper.toEntity(requestDTO);
         String password = generator.generateRandomPassword();
-        String createdUserName = generator.generateUserName(trainee.getFirstName(), trainee.getLastName());
+        String createdUserName = generator.generateUserName(requestDTO.getFirstName(), requestDTO.getLastName());
         trainee.setUserName(createdUserName);
+        trainee.setFirstName(requestDTO.getFirstName());
+        trainee.setLastName(requestDTO.getLastName());
         trainee.setPassword(password);
         trainee.setIsActive(true);
 
@@ -176,7 +187,6 @@ public class TraineeDAOImpl implements TraineeDAO {
                 .password(password)
                 .build();
     }
-
 
     @Override
     @Transactional
@@ -214,5 +224,4 @@ public class TraineeDAOImpl implements TraineeDAO {
             throw new RuntimeException("Not available");
         }
     }
-
 }

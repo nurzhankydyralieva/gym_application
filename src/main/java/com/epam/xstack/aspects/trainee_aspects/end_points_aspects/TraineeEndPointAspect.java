@@ -52,6 +52,7 @@ public class TraineeEndPointAspect {
     public void afterUpdateAdvice() {
         log.info("Update Trainee profile end point ended");
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.end_points_aspects.annotations.UpdateTTListEndPointAspectAnnotation)")
     public void updateTraineeTTLPointCut() {
     }
@@ -65,6 +66,7 @@ public class TraineeEndPointAspect {
     public void afterUpdateTTLAdvice() {
         log.info("Update user profile end point ended");
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.end_points_aspects.annotations.ActiveDeActiveTraineeEndPointAspectAnnotation)")
     public void activeDeActivePointCut() {
     }

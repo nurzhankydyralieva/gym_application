@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -18,7 +19,7 @@ import java.util.UUID;
 @DynamicUpdate
 @Entity
 @Table(name = "trainer")
-public class Trainer extends User{
+public class Trainer extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trainer_id")

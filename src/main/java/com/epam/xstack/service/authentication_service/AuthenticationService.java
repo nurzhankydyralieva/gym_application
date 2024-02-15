@@ -10,6 +10,6 @@ import java.util.UUID;
 public interface AuthenticationService {
 
     AuthenticationResponseDTO authenticateLogin(UUID id, AuthenticationRequestDTO requestDTO);
-    AuthenticationResponseDTO authenticationChangeLogin(UUID id, AuthenticationChangeLoginRequestDTO requestDTO);
 
+    AuthenticationResponseDTO authenticationChangeLogin(UUID id, AuthenticationChangeLoginRequestDTO requestDTO);
 }

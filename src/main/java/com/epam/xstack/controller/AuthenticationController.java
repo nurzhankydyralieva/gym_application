@@ -57,5 +57,4 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponseDTO> updateLogin(@PathVariable("id") UUID id, @Valid @RequestBody AuthenticationChangeLoginRequestDTO requestDTO) {
         return new ResponseEntity<>(authenticationService.authenticationChangeLogin(id, requestDTO), HttpStatus.OK);
     }
-
 }

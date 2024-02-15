@@ -15,6 +15,7 @@ public class SelectTraineeTrainingsListAspect {
     @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.SelectTraineeTrainingsListAspectAnnotation)")
     public void selectTraineeTrainingsListPointCut() {
     }
+
     @Before("selectTraineeTrainingsListPointCut()")
     public void beforeAdvice(JoinPoint joinPoint) {
         log.info("Before select Trainee Trainings List method invoked: " + joinPoint.getSignature());

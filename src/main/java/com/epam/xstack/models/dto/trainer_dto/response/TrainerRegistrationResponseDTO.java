@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerRegistrationResponseDTO {
-     String userName;
-     String password;
+    String userName;
+    String password;
 }
 

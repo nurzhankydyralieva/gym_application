@@ -13,5 +13,6 @@ public enum Code {
     AUTHORIZATION_ERROR,
     NOT_SUPPORTED,
     BLOCKED,
-    BAD_REQUEST
+    BAD_REQUEST,
+    USER_ID_NOT_FOUND
 }

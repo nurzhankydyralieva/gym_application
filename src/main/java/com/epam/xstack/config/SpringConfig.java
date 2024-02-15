@@ -83,5 +83,4 @@ public class SpringConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/swagger-ui/")
                 .setViewName("forward:" + "/swagger-ui/index.html");
     }
-
 }

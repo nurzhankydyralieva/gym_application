@@ -1,6 +1,7 @@
 package com.epam.xstack.models.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -19,5 +21,4 @@ public class TrainingType {
     private Long id;
     @Column(name = "training_type")
     private String trainingType;
-
 }

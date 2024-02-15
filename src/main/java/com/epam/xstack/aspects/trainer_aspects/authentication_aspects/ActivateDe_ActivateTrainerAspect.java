@@ -15,6 +15,7 @@ public class ActivateDe_ActivateTrainerAspect {
     @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.authentication_aspects.annotations.ActivateDe_ActivateTrainerAspectAnnotation)")
     public void activeDe_ActiveTrainerPointCut() {
     }
+
     @Before("activeDe_ActiveTrainerPointCut()")
     public void beforeAdvice(JoinPoint joinPoint) {
         log.info("Before activate deactivate Trainer method invoked: " + joinPoint.getSignature());

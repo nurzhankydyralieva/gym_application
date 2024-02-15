@@ -2,6 +2,8 @@ package com.epam.xstack.dao.trainer_dao.impl;
 
 import com.epam.xstack.aspects.trainer_aspects.authentication_aspects.annotations.*;
 import com.epam.xstack.dao.trainer_dao.TrainerDAO;
+import com.epam.xstack.exceptions.dao_exceptions.UserIdNotFoundException;
+import com.epam.xstack.exceptions.dao_exceptions.UserNameNotExistsException;
 import com.epam.xstack.mapper.trainee_mapper.TraineeMapper;
 import com.epam.xstack.mapper.trainer_mapper.*;
 import com.epam.xstack.mapper.training_mapper.TrainingListMapper;
@@ -9,11 +11,13 @@ import com.epam.xstack.models.dto.trainer_dto.request.*;
 import com.epam.xstack.models.dto.trainer_dto.response.*;
 import com.epam.xstack.models.entity.Trainer;
 import com.epam.xstack.models.enums.Code;
+import com.epam.xstack.validation.ActivationValidator;
 import com.epam.xstack.validation.UserNameExistenceValidator;
 import com.epam.xstack.validation.generator.Generator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +34,7 @@ public class TrainerDAOImpl implements TrainerDAO {
     private final TrainerTrainingsListMapper trainerTrainingsListMapper;
     private final Generator generator;
     private final UserNameExistenceValidator checkUserNameExistence;
-
+    private final ActivationValidator checkActivation;
 
     @Override
     @Transactional
@@ -40,15 +44,18 @@ public class TrainerDAOImpl implements TrainerDAO {
         Trainer trainerId = session.get(Trainer.class, id);
         trainerTrainingsListMapper.toEntity(requestDTO);
 
-        if (trainerId != null) {
+        if (trainerId != null && trainerId.getUserName().equals(requestDTO.getUserName())) {
             return TrainerTrainingsListResponseDTO
                     .builder()
                     .trainings(TrainingListMapper.INSTANCE.toDtos(trainerId.getTrainings()))
                     .build();
         } else {
-            throw new RuntimeException("Not exists");
+            throw UserIdNotFoundException.builder()
+                    .codeStatus(Code.USER_ID_NOT_FOUND)
+                    .message("User id:  " + trainerId.getId() + " or user name: " + trainerId.getUserName() + " not correct.")
+                    .httpStatus(HttpStatus.CONFLICT)
+                    .build();
         }
-
     }
 
     @Override
@@ -59,20 +66,17 @@ public class TrainerDAOImpl implements TrainerDAO {
         Trainer trainer = activateDeActivateTrainerMapper.toEntity(dto);
         Trainer existingTrainer = session.get(Trainer.class, id);
 
-        if (existingTrainer.getUserName().equals(dto.getUserName())) {
-            existingTrainer.setIsActive(dto.getIsActive());
-            session.update(existingTrainer);
-            activateDeActivateTrainerMapper.toDto(trainer);
-            return TrainerOkResponseDTO
-                    .builder()
-                    .code(Code.STATUS_200_OK)
-                    .response("Activate DeActivate Trainer updated")
-                    .build();
-        } else {
-            throw new RuntimeException("Not available");
-        }
-    }
+        checkActivation.checkActiveOrNotTrainerActive(id, dto);
 
+        existingTrainer.setIsActive(dto.getIsActive());
+        session.update(existingTrainer);
+        activateDeActivateTrainerMapper.toDto(trainer);
+        return TrainerOkResponseDTO
+                .builder()
+                .code(Code.STATUS_200_OK)
+                .response("Activate DeActivate Trainer updated")
+                .build();
+    }
 
     @Override
     @Transactional
@@ -101,7 +105,6 @@ public class TrainerDAOImpl implements TrainerDAO {
                 .build();
     }
 
-
     @Override
     @Transactional
     @SelectTrainerProfileByUserNameAspectAnnotation
@@ -122,9 +125,12 @@ public class TrainerDAOImpl implements TrainerDAO {
                     .traineeList(TraineeMapper.INSTANCE.toDtos(trainerId.getTraineeList()))
                     .build();
         } else {
-            throw new RuntimeException("Not available");
+            throw UserNameNotExistsException.builder()
+                    .codeStatus(Code.USER_NOT_FOUND)
+                    .message("User with name - " + requestDTO.getUserName() + " not exists in database")
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .build();
         }
-
     }
 
     @Override
@@ -150,5 +156,4 @@ public class TrainerDAOImpl implements TrainerDAO {
                 .password(password)
                 .build();
     }
-
 }

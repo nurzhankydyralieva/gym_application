@@ -21,7 +21,6 @@ public class TrainingSaveRequestDTO {
     Trainer trainerUserName;
     @NotNull(message = "Training name should not be empty")
     String trainingName;
-
     Date trainingDate;
     Number trainingDuration;
 }

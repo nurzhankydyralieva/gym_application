@@ -18,7 +18,7 @@ public class Generator {
         return password.toString();
     }
 
-    public String generateUserName(String firstName, String lastName){
+    public String generateUserName(String firstName, String lastName) {
         return firstName + "." + lastName;
     }
 }

@@ -12,5 +12,5 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerTrainingsListResponseDTO {
-     List<TrainerTrainingDTO> trainings;
+    List<TrainerTrainingDTO> trainings;
 }

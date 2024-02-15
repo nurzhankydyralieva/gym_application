@@ -12,5 +12,5 @@ import java.util.Collection;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TraineesTrainerListUpdateResponseDTO {
-     Collection<TrainerDTO> trainers;
+    Collection<TrainerDTO> trainers;
 }

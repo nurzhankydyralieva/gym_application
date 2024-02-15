@@ -15,5 +15,4 @@ public interface TraineeRegistrationRequestMapper {
     List<TraineeRegistrationRequestDTO> toDtos(List<Trainee> trainees);
 
     List<Trainee> toEntities(List<TraineeRegistrationRequestDTO> requestDTOS);
-
 }

@@ -20,7 +20,7 @@ public class Training {
     @Column(name = "training_id")
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "trainee_id" ,referencedColumnName = "id")
+    @JoinColumn(name = "trainee_id", referencedColumnName = "id")
     private Trainee trainee;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "trainer_id", referencedColumnName = "id")

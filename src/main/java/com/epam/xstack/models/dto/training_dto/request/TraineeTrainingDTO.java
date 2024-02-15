@@ -5,8 +5,6 @@ import com.epam.xstack.models.dto.training_type_dto.TrainingTypeDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Data
@@ -15,12 +13,10 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TraineeTrainingDTO {
-     String trainingName;
+    String trainingName;
+    Date trainingDate;
+    TrainingTypeDTO trainingType;
 
-     Date trainingDate;
-
-     TrainingTypeDTO trainingType;
-
-     Number trainingDuration;
-     TrainerDTO trainer;
+    Number trainingDuration;
+    TrainerDTO trainer;
 }

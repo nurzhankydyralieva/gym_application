@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         log.info("User already exists  - Exception: {}", ex.toString());
@@ -20,6 +19,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(ex.getMessage())
                 .build()).build(), ex.getHttpStatus());
     }
+
     @ExceptionHandler(UserNameOrPasswordNotCorrectException.class)
     public ResponseEntity<ErrorResponse> handleUserNotCorrectException(UserNameOrPasswordNotCorrectException ex) {
         log.info("User name or password not correct -  Exception: {}", ex.toString());
@@ -29,4 +29,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build()).build(), ex.getHttpStatus());
     }
 
+    @ExceptionHandler(UserNameNotExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotExistsException(UserNameNotExistsException ex) {
+        log.info("User name not exists in database -  Exception: {}", ex.toString());
+        return new ResponseEntity<>(ErrorResponse.builder().error(Error.builder()
+                .code(ex.getCodeStatus())
+                .message(ex.getMessage())
+                .build()).build(), ex.getHttpStatus());
+    }
+
+    @ExceptionHandler(UserIdNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserIdNotExistsException(UserIdNotFoundException ex) {
+        log.info("User Id not exists in database -  Exception: {}", ex.toString());
+        return new ResponseEntity<>(ErrorResponse.builder().error(Error.builder()
+                .code(ex.getCodeStatus())
+                .message(ex.getMessage())
+                .build()).build(), ex.getHttpStatus());
+    }
 }

@@ -15,6 +15,7 @@ public class ActivateDe_ActivateTraineeAspect {
     @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.ActivateDe_ActivateTraineeAspectAnnotation)")
     public void activeDe_ActiveTraineePointCut() {
     }
+
     @Before("activeDe_ActiveTraineePointCut()")
     public void beforeAdvice(JoinPoint joinPoint) {
         log.info("Before activate deactivate Trainee method invoked: " + joinPoint.getSignature());

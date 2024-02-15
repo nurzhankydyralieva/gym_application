@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
     @Column(name = "first_name")
@@ -33,8 +33,8 @@ public class User {
     @Column(name = "is_assigned")
     private Boolean isAssigned;
 
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
+    public User(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 }

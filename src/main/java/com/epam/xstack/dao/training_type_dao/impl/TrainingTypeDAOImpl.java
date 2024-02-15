@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrainingTypeDAOImpl implements TrainingTypeDAO {
     private final SessionFactory sessionFactory;
-
     private final TrainingTypeMapper trainingTypeMapper;
 
     @Override
@@ -43,5 +42,4 @@ public class TrainingTypeDAOImpl implements TrainingTypeDAO {
 
         return trainingTypeMapper.toDtos(resultList);
     }
-
 }

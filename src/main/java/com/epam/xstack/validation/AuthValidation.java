@@ -21,7 +21,6 @@ public class AuthValidation {
     private final SessionFactory sessionFactory;
     private final AuthenticationRequestMapper authenticationRequestMapper;
 
-
     public void authValidator(UUID id, AuthenticationRequestDTO requestDTO) {
         Session session = sessionFactory.getCurrentSession();
         User userId = session.get(User.class, id);
@@ -35,5 +34,4 @@ public class AuthValidation {
         }
         authenticationRequestMapper.toDto(user);
     }
-
 }

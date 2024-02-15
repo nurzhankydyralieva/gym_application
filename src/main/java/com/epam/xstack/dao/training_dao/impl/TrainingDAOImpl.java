@@ -20,7 +20,6 @@ public class TrainingDAOImpl implements TrainingDAO {
     private final SessionFactory sessionFactory;
     private final TrainingMapper trainingMapper;
 
-
     @Override
     @Transactional
     @TrainingSaveAspectAnnotation

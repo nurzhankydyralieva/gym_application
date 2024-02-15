@@ -10,8 +10,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerDTO {
-     String userName;
-     String firstName;
-     String lastName;
-     TrainingType specialization;
+    String userName;
+    String firstName;
+    String lastName;
+    TrainingType specialization;
+
+    public TrainerDTO(String trainer) {
+    }
 }

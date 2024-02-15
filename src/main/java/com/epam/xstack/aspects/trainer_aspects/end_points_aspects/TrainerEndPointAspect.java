@@ -24,6 +24,7 @@ public class TrainerEndPointAspect {
     public void afterAdvice() {
         log.info("Save Trainer end point ended");
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.end_points_aspects.annotations.SelectTrainerProfileAspectAnnotation)")
     public void selectTrainerPointCut() {
     }
@@ -37,6 +38,7 @@ public class TrainerEndPointAspect {
     public void afterSelectAdvice() {
         log.info("Select Trainer profile end point ended");
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.end_points_aspects.annotations.UpdateTrainerEndPointAspectAnnotation)")
     public void updateTrainerPointCut() {
     }
@@ -50,6 +52,7 @@ public class TrainerEndPointAspect {
     public void afterUpdateAdvice() {
         log.info("Update Trainer profile end point ended");
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.end_points_aspects.annotations.ActiveDeActiveTrainerEndPointAspectAnnotation)")
     public void activeDeActivePointCut() {
     }
@@ -63,6 +66,7 @@ public class TrainerEndPointAspect {
     public void afterActiveDeActiveAdvice() {
         log.info("updateActivateDe_ActivateTrainer: end point ended");
     }
+
     @Pointcut("@annotation(com.epam.xstack.aspects.trainer_aspects.end_points_aspects.annotations.SelectTrainerTLEndPointAspectAnnotation)")
     public void selectTTLPointCut() {
     }

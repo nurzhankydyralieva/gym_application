@@ -16,6 +16,4 @@ public interface TrainingTypeMapper {
 
 
     List<TrainingTypeDTO> toDtos(List<TrainingType> trainingType);
-
-
 }

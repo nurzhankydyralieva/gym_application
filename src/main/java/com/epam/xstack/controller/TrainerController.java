@@ -7,6 +7,8 @@ import com.epam.xstack.service.trainer_service.TrainerService;
 import com.epam.xstack.validation.NotNullValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,11 @@ public class TrainerController {
     private final TrainerService trainerService;
     private final NotNullValidation validation;
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User saved successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null")
+    })
     @ApiOperation(value = "Save Trainer to database")
     @SaveTrainerEndPointAspectAnnotation
     @PostMapping("/save")
@@ -32,6 +39,12 @@ public class TrainerController {
         return new ResponseEntity<>(trainerService.saveTrainer(requestDTO), HttpStatus.CREATED);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User selected successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Get Trainer by user name")
     @SelectTrainerProfileAspectAnnotation
     @GetMapping("/{id}")
@@ -40,7 +53,12 @@ public class TrainerController {
         return new ResponseEntity<>(trainerService.selectTrainerProfileByUserName(id, requestDTO), HttpStatus.OK);
     }
 
-
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User updated successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Update Trainer in database")
     @UpdateTrainerEndPointAspectAnnotation
     @PutMapping("/update/{id}")
@@ -49,6 +67,13 @@ public class TrainerController {
         return new ResponseEntity<>(trainerService.updateTrainerProfile(id, requestDTO), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User activated successfully"),
+            @ApiResponse(code = 403, message = "Access denied, check user name or id"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Update active or de active Trainer")
     @ActiveDeActiveTrainerEndPointAspectAnnotation
     @PatchMapping("/{id}")
@@ -57,6 +82,13 @@ public class TrainerController {
         return new ResponseEntity<>(trainerService.activateDe_ActivateTrainer(id, dto), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User selected successfully"),
+            @ApiResponse(code = 403, message = "Access denied, check user name or id"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Get Trainer Trainings List")
     @SelectTrainerTLEndPointAspectAnnotation
     @GetMapping("/select/{id}")

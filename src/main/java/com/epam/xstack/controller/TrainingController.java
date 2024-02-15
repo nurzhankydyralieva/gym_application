@@ -7,6 +7,8 @@ import com.epam.xstack.service.training_service.TrainingService;
 import com.epam.xstack.validation.NotNullValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,10 @@ public class TrainingController {
     private final TrainingService trainingService;
     private final NotNullValidation validation;
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Training saved successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials")
+    })
     @ApiOperation(value = "Save Training to database")
     @SaveTrainingEndPointAspectAnnotation
     @PostMapping("/save")
@@ -31,5 +37,4 @@ public class TrainingController {
         validation.nullValidation(result);
         return new ResponseEntity<>(trainingService.saveTraining(requestDTO), HttpStatus.CREATED);
     }
-
 }

@@ -25,6 +25,4 @@ public class AuthenticateLoginAspect {
     public void afterAdvice(JoinPoint joinPoint) {
         log.info("After authenticate login method invoked: " + joinPoint.getSignature());
     }
-
-
 }

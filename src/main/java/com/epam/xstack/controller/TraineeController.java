@@ -7,6 +7,8 @@ import com.epam.xstack.service.trainee_service.TraineeService;
 import com.epam.xstack.validation.NotNullValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,11 @@ public class TraineeController {
     private final TraineeService traineeService;
     private final NotNullValidation validation;
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User saved successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null")
+    })
     @ApiOperation(value = "Save Trainee to database")
     @SaveTraineeEndPointAspectAnnotation
     @PostMapping("/save")
@@ -32,7 +39,12 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.saveTrainee(requestDTO), HttpStatus.CREATED);
     }
 
-
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User selected successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Get Trainee by user name")
     @SelectTraineeProfileAspectAnnotation
     @GetMapping("/{id}")
@@ -41,6 +53,12 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.selectTraineeProfileByUserName(id, requestDTO), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User updated successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Update Trainee in database")
     @UpdateTraineeEndPointAspectAnnotation
     @PutMapping("/update/{id}")
@@ -49,6 +67,10 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.updateTraineeProfile(id, requestDTO), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User updated successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials")
+    })
     @ApiOperation(value = "Update Trainee's Trainer List in database")
     @UpdateTTListEndPointAspectAnnotation
     @PutMapping("/update-list/{id}")
@@ -57,6 +79,12 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.updateTraineesTrainerList(id, requestDTO), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User activated successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Update active or de active Trainee")
     @ActiveDeActiveTraineeEndPointAspectAnnotation
     @PatchMapping("/{id}")
@@ -65,6 +93,12 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.activateDe_ActivateTrainee(id, dto), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User deleted successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Delete Trainee by user name")
     @DeleteEndPointAspectAnnotation
     @DeleteMapping("/delete/{id}")
@@ -73,6 +107,12 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.deleteTraineeByUserName(id, requestDTO), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User selected successfully"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Get Trainee Trainings List")
     @SelectTraineeTLEndPointAspectAnnotation
     @GetMapping("/select/{id}")
@@ -81,6 +121,13 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.selectTraineeTrainingsList(id, requestDTO), HttpStatus.OK);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User selected successfully"),
+            @ApiResponse(code = 403, message = "Access denied, check user name or id"),
+            @ApiResponse(code = 401, message = "Bad credentials"),
+            @ApiResponse(code = 422, message = "User or password is null"),
+            @ApiResponse(code = 404, message = "User with user name or id not found")
+    })
     @ApiOperation(value = "Get not assigned on trainee active trainers.")
     @NotAssignedTraineeEndPointAspectAnnotation
     @GetMapping("/active-not-assigned/{id}")
@@ -88,5 +135,4 @@ public class TraineeController {
         validation.userNotNullValidation(result);
         return new ResponseEntity<>(traineeService.selectNotAssignedOnTraineeActiveTrainers(id, userName), HttpStatus.OK);
     }
-
 }

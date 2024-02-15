@@ -13,5 +13,4 @@ public interface AuthenticationChangeLoginRequestMapper {
 
     @InheritInverseConfiguration
     User toEntity(AuthenticationChangeLoginRequestDTO requestDTO);
-
 }

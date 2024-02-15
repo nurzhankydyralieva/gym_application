@@ -30,7 +30,6 @@ public class UserNameExistenceValidator {
                     .httpStatus(HttpStatus.CONFLICT)
                     .build();
         }
-
     }
 }
 

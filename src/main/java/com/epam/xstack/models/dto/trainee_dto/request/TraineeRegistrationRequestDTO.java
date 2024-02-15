@@ -14,12 +14,12 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TraineeRegistrationRequestDTO {
-     @NotEmpty(message = "First name should not be empty")
-     String firstName;
-     @NotEmpty(message = "Last name should not be empty")
-     String lastName;
-     @Past(message = "Date of birth must be in the past date")
-     Date dateOfBirth;
-     @NotBlank(message = "Address have not to be blank")
-     String address;
+    @NotEmpty(message = "First name should not be empty")
+    String firstName;
+    @NotEmpty(message = "Last name should not be empty")
+    String lastName;
+    @Past(message = "Date of birth must be in the past date")
+    Date dateOfBirth;
+    @NotBlank(message = "Address have not to be blank")
+    String address;
 }

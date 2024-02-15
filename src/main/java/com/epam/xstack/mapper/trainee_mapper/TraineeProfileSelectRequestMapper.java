@@ -14,6 +14,5 @@ public interface TraineeProfileSelectRequestMapper {
 
     List<TraineeProfileSelectRequestDTO> toDtos(List<Trainee> trainees);
 
-
     List<Trainee> toEntities(List<TraineeProfileSelectRequestDTO> requestDTOS);
 }

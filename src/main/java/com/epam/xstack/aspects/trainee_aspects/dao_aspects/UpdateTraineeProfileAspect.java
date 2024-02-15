@@ -15,6 +15,7 @@ public class UpdateTraineeProfileAspect {
     @Pointcut("@annotation(com.epam.xstack.aspects.trainee_aspects.dao_aspects.annotations.UpdateTraineeProfileAspectAnnotation)")
     public void updateTraineeProfilePointCut() {
     }
+
     @Before("updateTraineeProfilePointCut()")
     public void beforeAdvice(JoinPoint joinPoint) {
         log.info("Before update Trainee profile method invoked: " + joinPoint.getSignature());

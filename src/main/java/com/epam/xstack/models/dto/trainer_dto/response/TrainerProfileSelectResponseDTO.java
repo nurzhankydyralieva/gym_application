@@ -13,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainerProfileSelectResponseDTO {
-     String firstName;
-     String lastName;
-     TrainingType specialization;
-     Boolean isActive;
-     List<TraineeDTO> traineeList;
+    String firstName;
+    String lastName;
+    TrainingType specialization;
+    Boolean isActive;
+    List<TraineeDTO> traineeList;
 }
 
 
